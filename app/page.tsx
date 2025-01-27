@@ -1,40 +1,45 @@
 "use client";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
+import { useState } from "react";
+import { Button } from "@mui/material";
+import CardList from "./components/card/cardList";
+import Navbar from "./components/navbar/navbar";
 
-const GoogleBooks = () => {
-  const [games, setGames] = useState([]);
-  const apiKey = "d7e0fab152854451a388218c599cc5b2";
+const Page = () => {
+  const [page, setPage] = useState(1);
 
-  const url2 = `https://api.rawg.io/api/games?`;
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const response = await axios.get(url2, {
-          params: {
-            key: apiKey,
-            page: 1,
-          },
-        });
-        setGames(response.data.results || []);
-      } catch (error) {
-        console.error("Kitaplar alınırken hata oluştu:", error);
-      }
-    };
-
-    fetchBooks();
-  }, []);
-  console.log(games);
   return (
-    <div>
-      {games.map((game, index) => (
-        <div key={index}>
-          <p>{game.name}</p>
-        </div>
-      ))}
-    </div>
+    <>
+      <CardList page={page} />
+      <div className="flex justify-center my-4 gap-4">
+        {page === 1 ? (
+          <Button
+            variant="contained"
+            disabled={true}
+            color="primary"
+            onClick={() => setPage(page > 1 ? page - 1 : 1)}
+          >
+            Prev
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setPage(page > 1 ? page - 1 : 1)}
+          >
+            Prev
+          </Button>
+        )}
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setPage(page + 1)}
+        >
+          Next
+        </Button>
+      </div>
+    </>
   );
 };
 
-export default GoogleBooks;
+export default Page;
