@@ -1,7 +1,6 @@
 "use client";
 import "./globals.css";
 import Header from "./components/header/header";
-import Navbar from "./components/navbar/navbar";
 
 import ClientProviders from "./providers";
 
@@ -10,13 +9,10 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <html lang="en">
       <body className={`antialiased`}>
         <ClientProviders>
-          <Header />
-          <div className="">
-            <div className="flex fixed">
-              <Navbar />
-            </div>
-            <main className="flex-grow ml-56 ">{children}</main>
+          <div className="fixed top-0 w-full z-50">
+            <Header />
           </div>
+          <main className=" ">{children}</main>
         </ClientProviders>
       </body>
     </html>

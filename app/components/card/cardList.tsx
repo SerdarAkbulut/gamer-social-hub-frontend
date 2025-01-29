@@ -31,17 +31,20 @@ const CardList: React.FC<PageProps> = ({ page }) => {
   if (isError) {
     return <div>Error occurred!</div>;
   }
+  console.log(data);
   return (
     <div className="grid grid-cols-6 gap-5 mt-12 px-10">
       {data.map((game: any, index: number) => (
         <Card key={index} className="h-15 flex flex-col">
           <CardHeader title={game.name} className="h-20" />
-          <CardMedia
-            component="img"
-            image={game.background_image}
-            alt="resim bulunamadı"
-            className="flex self-center h-40 shadow-lg"
-          />
+          <a href={game}>
+            <CardMedia
+              component="img"
+              image={game.background_image}
+              alt="resim bulunamadı"
+              className="flex self-center h-40 shadow-lg"
+            />
+          </a>
           <CardContent className="flex justify-between">
             <div className="flex gap-5">
               <div>

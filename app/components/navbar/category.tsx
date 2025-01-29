@@ -1,15 +1,12 @@
 "use client";
 
 import gamesApi from "@/app/api/client/games";
-import { categoryState } from "@/app/state/atoms";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useRecoilState } from "recoil";
 
-const Navbar: React.FC = () => {
+const CategoryList: React.FC = () => {
   const [value, setValue] = React.useState(0);
-  const [cat, setCat] = useRecoilState(categoryState);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -50,4 +47,4 @@ const Navbar: React.FC = () => {
     </div>
   );
 };
-export default Navbar;
+export default CategoryList;

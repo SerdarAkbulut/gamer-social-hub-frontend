@@ -49,9 +49,21 @@ const fetchSearchGames = async (
   return response.data.results;
 };
 
+const fetchGame = async () => {
+  const response = await axios.get("https://api.rawg.io/api/games/303576", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      key: apiKey,
+    },
+  });
+  return response.data;
+};
 const gamesApi = {
   fetchGames,
   fetchCategory,
+  fetchGame,
 };
 
 export default gamesApi;

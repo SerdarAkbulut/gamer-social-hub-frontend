@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
 import CardList from "./components/card/cardList";
-import Navbar from "./components/navbar/navbar";
 
 const Page = () => {
   const [page, setPage] = useState(1);
