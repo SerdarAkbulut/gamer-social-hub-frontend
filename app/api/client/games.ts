@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiKey = "d7e0fab152854451a388218c599cc5b2";
 
-const fetchGames = async (page: number) => {
+const fetchMainGames = async (page: number) => {
   const response = await axios.get("https://api.rawg.io/api/games?", {
     headers: {
       "Content-Type": "application/json",
@@ -11,6 +11,41 @@ const fetchGames = async (page: number) => {
       key: apiKey,
       page_size: 24,
       page: page,
+      ordering: "-released",
+      dates: `1950-01-01,${today}`,
+      publishers:
+        "electronic-arts,microsoft-studios,square-enix,ubisoft,sega,valve-corporation,capcom,2k-games,sony-interactive-entertainment,paradox-interactive,sega,sony-computer-entertainment,activision-blizzard,konami,blizzard-entertainment,rockstar-games",
+    },
+  });
+  return response.data.results;
+};
+const today = new Date().toISOString().split("T")[0]; // Bugünün tarihini al
+const fetchAllGames = async (page: number) => {
+  const response = await axios.get("https://api.rawg.io/api/games", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      key: apiKey,
+      page_size: 24,
+      page: page,
+      ordering: "-released",
+    },
+  });
+  return response.data.results;
+};
+
+const fetchReleasedGames = async (page: number) => {
+  const response = await axios.get("https://api.rawg.io/api/games", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      key: apiKey,
+      page_size: 24,
+      page: page,
+      ordering: "-released",
+      dates: `1950-01-01,${today}`,
     },
   });
   return response.data.results;
@@ -49,8 +84,8 @@ const fetchSearchGames = async (
   return response.data.results;
 };
 
-const fetchGame = async () => {
-  const response = await axios.get("https://api.rawg.io/api/games/303576", {
+const fetchGame = async (id: number) => {
+  const response = await axios.get(`https://api.rawg.io/api/games/${id}`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -61,9 +96,12 @@ const fetchGame = async () => {
   return response.data;
 };
 const gamesApi = {
-  fetchGames,
+  fetchMainGames,
   fetchCategory,
   fetchGame,
+  fetchSearchGames,
+  fetchAllGames,
+  fetchReleasedGames,
 };
 
 export default gamesApi;

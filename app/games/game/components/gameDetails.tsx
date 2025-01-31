@@ -1,21 +1,17 @@
+import UserContent from "@/app/components/card/user-content/userContent";
 import React from "react";
 interface GameDetailsProps {
   name: string;
-  img: string;
-  gameTags: GameTags;
 }
-interface GameTags {
-  name: string;
-}
-const GameDetailsComponent: React.FC<GameDetailsProps> = ({
-  name,
-  img,
-  gameTags,
-}) => {
+
+const GameDetailsComponent: React.FC<GameDetailsProps> = ({}) => {
   return (
-    <div className="ml-60 mt-20">
-      <h1>{name}</h1>
-      <img src={img} alt="resim" className="w-3/4" />
+    <div className=" flex flex-col shadow-sm">
+      <div className="flex justify-between">
+        <div className=" flex w-full ">
+          <UserContent />
+        </div>
+      </div>
     </div>
   );
 };

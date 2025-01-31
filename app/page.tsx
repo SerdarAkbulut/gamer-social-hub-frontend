@@ -1,43 +1,25 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@mui/material";
-import CardList from "./components/card/cardList";
+import CardList from "./components/card/game-card/cardList";
+import { useQuery } from "@tanstack/react-query";
+import gamesApi from "./api/client/games";
+import UserContent from "./components/card/user-content/userContent";
 
 const Page = () => {
   const [page, setPage] = useState(1);
-
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["games", page],
+    queryFn: () => gamesApi.fetchMainGames(page),
+  });
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) {
+    return <div>Error</div>;
+  }
   return (
-    <>
-      <CardList page={page} />
-      <div className="flex justify-center my-4 gap-4">
-        {page === 1 ? (
-          <Button
-            variant="contained"
-            disabled={true}
-            color="primary"
-            onClick={() => setPage(page > 1 ? page - 1 : 1)}
-          >
-            Prev
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setPage(page > 1 ? page - 1 : 1)}
-          >
-            Prev
-          </Button>
-        )}
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setPage(page + 1)}
-        >
-          Next
-        </Button>
-      </div>
-    </>
+    <div className="px-52">
+      <UserContent />
+    </div>
   );
 };
 
