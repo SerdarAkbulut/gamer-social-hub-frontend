@@ -27,9 +27,9 @@ const CardList: React.FC<PageProps> = ({ data }) => {
           <Link href={`/games/game/${game.id}`}>
             <CardMedia
               component="img"
-              image={game.background_image}
+              image={game?.cover_url}
               alt="resim bulunamadı"
-              className="flex self-center h-40 shadow-lg"
+              className=""
             />
           </Link>
           <CardContent className="flex justify-between">
