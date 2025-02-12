@@ -1,6 +1,6 @@
 "use client";
 
-import gamesApi from "@/app/api/client/games";
+import { getGenres, getThemes } from "@/app/api/services/gameServices";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -11,15 +11,17 @@ const CategoryList: React.FC = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  const { data, isLoading, isError } = useQuery({
+  const { data } = useQuery({
     queryKey: ["categories"],
-    queryFn: () => gamesApi.fetchCategory(),
+    queryFn: () => getGenres(),
   });
-  const allCategory = (e) => {
-    console.log(e, "e");
-  };
+  const { data: themes } = useQuery({
+    queryKey: ["themes"],
+    queryFn: () => getThemes(),
+  });
+  console.log(themes);
   return (
-    <div className="  ">
+    <div className="w-1/2">
       <Box
         sx={{
           width: "100%",
@@ -35,6 +37,30 @@ const CategoryList: React.FC = () => {
         >
           <Tab label="All" onClick={() => allCategory("all")} />
           {data?.map((item, index) => (
+            <Tab
+              label={item.name}
+              value={item.name}
+              key={index}
+              onClick={() => allCategory(value)}
+            />
+          ))}
+        </Tabs>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          bgcolor: "background.paper",
+        }}
+      >
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          orientation="vertical"
+          variant="scrollable"
+          className="h-96"
+        >
+          <Tab label="All" onClick={() => allCategory("all")} />
+          {themes?.map((item, index) => (
             <Tab
               label={item.name}
               value={item.name}

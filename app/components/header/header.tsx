@@ -1,24 +1,23 @@
-import { getSearch } from "@/app/api/services/gameServices";
 import { searchState } from "@/app/state/atoms";
 import { TextField } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 
 const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useRecoilState(searchState);
+  const router = useRouter();
+
   const handleKeyDown = async (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
-      event.preventDefault(); // Varsayılan form submit işlemini engeller
-      try {
-        const response = await getSearch(searchTerm);
-        console.log("Sonuç:", response.data);
-      } catch (error) {
-        console.error("API isteği başarısız:", error);
-      }
+      event.preventDefault();
+
+      router.push(`/games/search?q=${searchTerm}`);
     }
   };
+
   return (
     <>
       <div className="bg-gray-500 text-white p-4 flex justify-between">

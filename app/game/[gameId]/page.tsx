@@ -1,13 +1,13 @@
 "use client";
-import gamesApi from "@/app/api/client/games";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import GameDetailsComponent from "../components/gameDetails";
+import { getGameDetails } from "@/app/api/services/gameServices";
 
 function GameDetails(id: number) {
   const { data } = useQuery({
-    queryKey: ["game"],
-    queryFn: () => gamesApi.fetchGame(id?.params.gameId),
+    queryKey: ["game", id],
+    queryFn: () => getGameDetails(id?.params?.gameId),
   });
   console.log(data);
 

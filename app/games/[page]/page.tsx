@@ -5,16 +5,15 @@ import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getGames } from "../../api/services/gameServices";
 import CardList from "../../components/card/game-card/cardList";
+import CategoryList from "@/app/components/navbar/category";
 
 function GameList() {
   const params = useParams();
   const router = useRouter();
 
-  // Sayfa numarasını URL'den al ve sayıya çevir
   const initialPage = Number(params.page) || 1;
   const [page, setPage] = useState(initialPage);
 
-  // Sayfa değiştikçe URL'yi güncelle
   useEffect(() => {
     router.push(`/games/${page}`);
   }, [page, router]);
@@ -29,7 +28,9 @@ function GameList() {
 
   return (
     <div className="flex justify-between">
-      <div className="flex fixed left-0">{/* <CategoryList /> */}</div>
+      <div className="flex fixed left-0">
+        <CategoryList />
+      </div>
       <div className="ml-60">
         <CardList data={data} />
         <div className="flex justify-center my-4 gap-4">

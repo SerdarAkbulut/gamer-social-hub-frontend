@@ -24,7 +24,7 @@ const CardList: React.FC<PageProps> = ({ data }) => {
       {data?.map((game: any, index: number) => (
         <Card key={index} className="h-15 flex flex-col">
           <CardHeader subheader={game.name} className="h-20 " />
-          <Link href={`/games/game/${game.id}`}>
+          <Link href={`/game/${game.id}`}>
             <CardMedia
               component="img"
               image={game?.cover_url}
