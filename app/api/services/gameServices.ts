@@ -1,7 +1,7 @@
 import apiClient from "../client/apiClient";
 
-export const getGames = async (page: number) => {
-  const response = await apiClient.get("/games", {
+export const getNewestGames = async (page: number) => {
+  const response = await apiClient.get("/newestGames", {
     params: { page },
   });
   return response.data;
@@ -16,6 +16,12 @@ export const getSearch = async (q: string, page: number) => {
 export const getGameDetails = async (id: number) => {
   const response = await apiClient.get("/gameDetails", {
     params: { id: id },
+  });
+  return response.data;
+};
+export const upcomingGames = async (page: number) => {
+  const response = await apiClient.get("/upcomingGames", {
+    params: { page },
   });
   return response.data;
 };

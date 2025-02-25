@@ -1,8 +1,8 @@
 import { atom } from "recoil";
 
-export const categoryState = atom<string>({
-  key: "categoryState",
-  default: "all",
+export const sortState = atom<string>({
+  key: "sortState",
+  default: "",
 });
 
 export const navbarState = atom<boolean>({

@@ -8,7 +8,7 @@ import React, { useState } from "react";
 export default function Search() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("q");
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const { data, refetch } = useQuery({
     queryKey: ["search", searchQuery, page],
     queryFn: () => getSearch(searchQuery, page),

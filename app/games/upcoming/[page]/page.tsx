@@ -1,19 +1,19 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { upcomingGames } from "@/app/api/services/gameServices";
+import CardList from "@/app/components/card/game-card/cardList";
 import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { upcomingGames } from "../../api/services/gameServices";
-import CardList from "../../components/card/game-card/cardList";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-function GameList() {
+function UpcomingGames() {
   const params = useParams();
   const router = useRouter();
 
   const initialPage = Number(params.page) || 1;
   const [page, setPage] = useState(initialPage);
   useEffect(() => {
-    router.push(`/games/${page}`);
+    router.push(`/games/upcoming/${page}`);
   }, [page, router]);
 
   const { data, isLoading, isError } = useQuery({
@@ -48,5 +48,4 @@ function GameList() {
     </>
   );
 }
-
-export default GameList;
+export default UpcomingGames;

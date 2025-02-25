@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import apiClient from "../client/apiClient";
 
 interface User {
@@ -8,7 +9,61 @@ export const getUsers = async (): Promise<User[]> => {
   const response = await apiClient.get("/users");
   return response.data;
 };
-export const registerUser = async () => {
-  const response = await apiClient.post("/users/register");
-  return response.data;
+export const registerUser = async (
+  userName: string,
+  email: string,
+  password: string
+) => {
+  try {
+    const response = await apiClient.post("/register", {
+      userName,
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 409) {
+      toast.error(
+        error.response.data.message ||
+          "E-posta veya kullanıcı adı zaten kayıtlı",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+    } else {
+      toast.error("Bir hata oluştu, lütfen tekrar deneyin.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    throw error; // Hata fırlatarak çağıran fonksiyonun da yakalamasını sağla
+  }
+};
+
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const response = await apiClient.post("/login", {
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
 };
