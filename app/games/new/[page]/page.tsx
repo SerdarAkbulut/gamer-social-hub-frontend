@@ -16,7 +16,7 @@ function NewGames() {
     router.push(`/games/new/${page}`);
   }, [page, router]);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: ["games", page],
     queryFn: () => getNewestGames(page),
   });
@@ -26,7 +26,7 @@ function NewGames() {
   return (
     <>
       <div className="px-28">
-        <CardList data={data} />
+        <CardList data={data} refetch={refetch} isFetching={isFetching} />
         <div className="flex justify-center  gap-4 mt-5">
           <Button
             variant="contained"

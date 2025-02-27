@@ -12,21 +12,23 @@ function GameList() {
 
   const initialPage = Number(params.page) || 1;
   const [page, setPage] = useState(initialPage);
+
   useEffect(() => {
     router.push(`/games/${page}`);
   }, [page, router]);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: ["games", page],
     queryFn: () => upcomingGames(page),
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
+
   return (
     <>
       <div className="px-28">
-        <CardList data={data} />
+        <CardList data={data} refetch={refetch} isFetching={isFetching} />
         <div className="flex justify-center  gap-4 mt-5">
           <Button
             variant="contained"

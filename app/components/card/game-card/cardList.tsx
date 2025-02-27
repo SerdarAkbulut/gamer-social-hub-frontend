@@ -7,12 +7,14 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { likeGame } from "@/app/api/services/likedGames";
+import LikeButton from "../../likeButtons/likeButtons";
 
 interface PageProps {
   data: any;
+  refetch: () => void; // ✅ refetch prop'unu ekledik
 }
-const CardList: React.FC<PageProps> = ({ data }) => {
-  // ✅ useMutation burada tanımlanmalı
+
+const CardList: React.FC<PageProps> = ({ data, refetch }) => {
   const { mutate } = useMutation({
     mutationFn: (variables: {
       gameId: number;
@@ -26,10 +28,8 @@ const CardList: React.FC<PageProps> = ({ data }) => {
         variables.gameImage,
         variables.isLiked
       ),
-    onSuccess: (response) => {
-      if (response) {
-        console.log("eklendi");
-      }
+    onSuccess: () => {
+      refetch();
     },
   });
 
@@ -51,33 +51,14 @@ const CardList: React.FC<PageProps> = ({ data }) => {
           </Link>
           <CardContent className="flex gap-5">
             <div className="flex-col h-full">
-              <ThumbUpAltIcon
-                className="flex self-center hover:cursor-pointer"
-                onClick={() => {
-                  mutate({
-                    gameId: game.id,
-                    gameName: game.name,
-                    gameImage: game?.cover_url,
-                    isLiked: true,
-                  });
-                }}
+              <LikeButton
+                gameId={game.id}
+                gameImage={game.cover_url}
+                gameName={game.name}
+                isLiked={game.isLiked}
               />
-              <span className="text-gray-400 flex justify-center">50</span>
             </div>
-            <div>
-              <ThumbDownAltIcon
-                className="flex self-center hover:cursor-pointer"
-                onClick={() => {
-                  mutate({
-                    gameId: game.id,
-                    gameName: game.name,
-                    gameImage: game?.cover_url,
-                    isLiked: false,
-                  });
-                }}
-              />
-              <span className="text-gray-400 flex justify-center">50</span>
-            </div>
+
             <div className="flex justify-end w-full">
               <FavoriteIcon className="flex justify-end hover:cursor-pointer text-gray-500" />
             </div>
