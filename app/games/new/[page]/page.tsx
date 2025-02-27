@@ -26,7 +26,7 @@ function NewGames() {
   return (
     <>
       <div className="px-28">
-        <CardList data={data} refetch={refetch} isFetching={isFetching} />
+        <CardList data={data} refetch={refetch} />
         <div className="flex justify-center  gap-4 mt-5">
           <Button
             variant="contained"

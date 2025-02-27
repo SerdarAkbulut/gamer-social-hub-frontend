@@ -43,7 +43,6 @@ const LikeButton = ({ gameId, gameName, gameImage, isLiked }: GameProps) => {
 
   return (
     <div className="flex justify-center gap-5">
-      {/* Like Button */}
       <div
         onClick={handleLikeClick}
         style={{
@@ -57,7 +56,6 @@ const LikeButton = ({ gameId, gameName, gameImage, isLiked }: GameProps) => {
         />
       </div>
 
-      {/* Dislike Button */}
       <div
         onClick={handleLikeClick}
         style={{
