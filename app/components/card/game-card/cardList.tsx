@@ -1,12 +1,18 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  duration,
+} from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { likeGame } from "@/app/api/services/likedGames";
+import { favoriteGame, likeGame } from "@/app/api/services/likedGames";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -17,8 +23,9 @@ interface PageProps {
 
 const CardList: React.FC<PageProps> = ({ data, refetch }) => {
   const [like, setLike] = useState<Record<number, boolean>>({});
-
-  const { mutate } = useMutation({
+  const [disLike, setDisLike] = useState<Record<number, boolean>>({});
+  const [favorite, setFavorite] = useState<Record<number, boolean>>({});
+  const { mutate: liked } = useMutation({
     mutationFn: (variables: {
       gameId: number;
       gameName: string;
@@ -31,6 +38,24 @@ const CardList: React.FC<PageProps> = ({ data, refetch }) => {
         variables.gameImage,
         variables.isLiked
       ),
+
+    onSuccess: () => {
+      refetch();
+    },
+  });
+  const { mutate: favorited } = useMutation({
+    mutationFn: (variables: {
+      gameId: number;
+      gameName: string;
+      gameImage: string;
+      isFavorited: boolean;
+    }) =>
+      favoriteGame(
+        variables.gameId,
+        variables.gameName,
+        variables.gameImage,
+        variables.isFavorited
+      ),
     onSuccess: () => {
       refetch();
     },
@@ -41,6 +66,20 @@ const CardList: React.FC<PageProps> = ({ data, refetch }) => {
 
     setTimeout(() => {
       setLike((prev) => ({ ...prev, [gameId]: false }));
+    }, 700);
+  };
+  const handleDisLike = (gameId: number) => {
+    setDisLike((prev) => ({ ...prev, [gameId]: true }));
+
+    setTimeout(() => {
+      setDisLike((prev) => ({ ...prev, [gameId]: false }));
+    }, 700);
+  };
+  const handleFavorite = (gameId: number) => {
+    setFavorite((prev) => ({ ...prev, [gameId]: true }));
+
+    setTimeout(() => {
+      setFavorite((prev) => ({ ...prev, [gameId]: false }));
     }, 700);
   };
 
@@ -63,15 +102,23 @@ const CardList: React.FC<PageProps> = ({ data, refetch }) => {
           <CardContent className="flex gap-5">
             <div>
               <motion.div
-                animate={{ scale: like[game.id] ? 1.2 : 1 }}
-                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                animate={{
+                  scale: like[game.id]
+                    ? game.isLiked === true
+                      ? 0.7 // Eğer beğenildiyse küçült
+                      : game.isLiked === false
+                      ? 1.5 // Eğer beğenilmediyse büyüt
+                      : 1.5 // Eğer isLiked null ise, biraz büyüt
+                    : 1, // Varsayılan durumda normal boyutta kal
+                }}
+                transition={{ duration: 0.6, ease: "circInOut" }}
               >
                 <ThumbUpAltIcon
                   className={`flex self-center hover:cursor-pointer ${
-                    game.isLiked ? "text-blue-600" : ""
+                    game.isLiked === true ? "text-blue-600" : ""
                   }`}
                   onClick={() => {
-                    mutate({
+                    liked({
                       gameId: game.id,
                       gameName: game.name,
                       gameImage: game?.cover_url,
@@ -85,24 +132,73 @@ const CardList: React.FC<PageProps> = ({ data, refetch }) => {
             </div>
 
             <div>
-              <ThumbDownAltIcon
-                className={`flex self-center hover:cursor-pointer ${
-                  game.isLiked === false ? "text-red-600" : ""
-                }`}
-                onClick={() => {
-                  mutate({
-                    gameId: game.id,
-                    gameName: game.name,
-                    gameImage: game?.cover_url,
-                    isLiked: false,
-                  });
+              <motion.div
+                animate={{
+                  scale: disLike[game.id]
+                    ? game.isLiked === false
+                      ? 1.5 // Eğer beğenildiyse küçült
+                      : game.isLiked === true
+                      ? 0.7 // Eğer beğenilmediyse büyüt
+                      : 0.7 // Eğer isLiked null ise, biraz büyüt
+                    : 1, // Varsayılan durumda normal boyutta kal
                 }}
-              />
+                transition={{ duration: 0.6, ease: "circInOut" }}
+              >
+                <ThumbDownAltIcon
+                  className={`flex self-center hover:cursor-pointer ${
+                    game.isLiked === false ? "text-red-600" : ""
+                  }`}
+                  onClick={() => {
+                    liked({
+                      gameId: game.id,
+                      gameName: game.name,
+                      gameImage: game?.cover_url,
+                      isLiked: false,
+                    });
+                    handleDisLike(game.id);
+                  }}
+                />
+              </motion.div>
               <span className="text-gray-400 flex justify-center">50</span>
             </div>
 
             <div className="flex justify-end w-full">
-              <FavoriteIcon className="flex justify-end hover:cursor-pointer text-gray-500" />
+              {game.isFavorited ? (
+                <motion.div>
+                  <FavoriteIcon
+                    className="flex justify-end hover:cursor-pointer text-red-500"
+                    onClick={() => {
+                      favorited({
+                        gameId: game.id,
+                        gameName: game.name,
+                        gameImage: game?.cover_url,
+                        isFavorited: false,
+                      });
+                      handleFavorite(game.id);
+                    }}
+                  />
+                </motion.div>
+              ) : (
+                <motion.div
+                  animate={{
+                    scale: favorite[game.id] ? [1, 2] : 1,
+                  }}
+                  transition={{ duration: 1, ease: "circInOut" }}
+                >
+                  <FavoriteIcon
+                    className="flex justify-end hover:cursor-pointer text-gray-500"
+                    onClick={() => {
+                      favorited({
+                        gameId: game.id,
+                        gameName: game.name,
+                        gameImage: game?.cover_url,
+                        isFavorited: true,
+                      });
+                      handleFavorite(game.id);
+                    }}
+                  />
+                </motion.div>
+              )}
             </div>
           </CardContent>
         </Card>
