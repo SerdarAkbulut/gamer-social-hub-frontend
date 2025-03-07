@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
-export const sortState = atom<string>({
-  key: "sortState",
+export const gameIdState = atom<string>({
+  key: "gameIdState",
   default: "",
 });
 

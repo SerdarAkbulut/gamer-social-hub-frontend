@@ -1,32 +1,29 @@
 "use client";
-import { upcomingGames } from "@/app/api/services/gameServices";
-import CardList from "@/app/components/card/game-card/cardList";
+import React, { useState } from "react";
+import { useParams } from "next/navigation";
 import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 
-function UpcomingGames() {
+import { myFavoritedGames } from "@/app/api/services/likedGames";
+import LikedGamesCard from "../components/card/liked-games/likedGames";
+
+function LikedGames() {
   const params = useParams();
-  const router = useRouter();
 
   const initialPage = Number(params.page) || 1;
   const [page, setPage] = useState(initialPage);
-
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["games", page],
-    queryFn: () => upcomingGames(page),
+    queryKey: ["myFavoritedGames"],
+    queryFn: () => myFavoritedGames(),
   });
-  useEffect(() => {
-    router.push(`/games/upcoming/${page}`);
-    refetch();
-  }, [page, router]);
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
+
   return (
     <>
-      <div className="px-28">
-        <CardList data={data} refetch={refetch} />
+      <div className="px-28 mt-28">
+        <LikedGamesCard data={data} refetch={refetch} />
         <div className="flex justify-center  gap-4 mt-5">
           <Button
             variant="contained"
@@ -48,4 +45,5 @@ function UpcomingGames() {
     </>
   );
 }
-export default UpcomingGames;
+
+export default LikedGames;

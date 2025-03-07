@@ -41,3 +41,21 @@ export const favoriteGame = async (
     throw error; // Hata yönetimi için hatayı yukarıya fırlat
   }
 };
+
+export const myLikedGames = async () => {
+  try {
+    const response = await apiClient.get("likedGames");
+    return response.data;
+  } catch (error) {
+    console.error("API Hatası:", error);
+  }
+};
+
+export const myFavoritedGames = async () => {
+  try {
+    const response = await apiClient.get("favoritedGames");
+    return response.data;
+  } catch (error) {
+    console.error("API Hatası:", error);
+  }
+};

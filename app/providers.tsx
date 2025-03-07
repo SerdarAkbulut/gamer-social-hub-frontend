@@ -9,8 +9,6 @@ const queryClient = new QueryClient();
 const ClientProviders: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <RecoilRoot>
-      {" "}
-      {/* RecoilRoot en dışa alındı */}
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </RecoilRoot>
   );

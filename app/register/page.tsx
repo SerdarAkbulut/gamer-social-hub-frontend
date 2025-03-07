@@ -1,6 +1,5 @@
 "use client";
 import { Button, TextField } from "@mui/material";
-import axios from "axios";
 import React, { useState } from "react";
 import { registerUser } from "../api/services/userServices";
 

@@ -1,35 +1,72 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GameDetailsComponent from "../components/gameDetails";
 import { getGameDetails } from "@/app/api/services/gameServices";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Button } from "@mui/material";
+import { useRouter, useParams } from "next/navigation";
 
-function GameDetails(id: number) {
+function GameDetails() {
+  const router = useRouter();
+  const params = useParams();
+  const [gameId, setGameId] = useState<string | null>(null);
+
+  // localStorage işlemlerini sadece tarayıcıda çalıştır
+  useEffect(() => {
+    if (typeof window !== "undefined" && params?.gameId) {
+      localStorage.setItem("gameId", params.gameId.toString());
+      setGameId(params.gameId); // gameId'yi state'e kaydet
+    }
+  }, [params?.gameId]);
+
+  // gameId'yi number türüne dönüştürme
+  const numberGameId = gameId
+    ? parseInt(gameId.replace(/^"|"$/g, ""), 10)
+    : null;
+
   const { data } = useQuery({
-    queryKey: ["game", id],
-    queryFn: () => getGameDetails(id?.params?.gameId),
+    queryKey: ["game", numberGameId],
+    queryFn: () =>
+      numberGameId ? getGameDetails(numberGameId) : Promise.resolve(null), // gameId null ise sorgu yapma
+    enabled: !!numberGameId,
   });
-  console.log(data);
+
+  const newForm = (gameName: string) => {
+    localStorage.setItem("gameName", gameName.toString());
+    router.push("/new-post");
+  };
 
   return (
-    <div className=" px-52">
-      <div className="bg-gray-600 p-5 text-white rounded-md">
-        <h1 className="text-2xl ">{data?.name}</h1>
-      </div>
-      <div className="mt-5  flex ">
-        <div className="w-full  ">
-          <GameDetailsComponent name="" />
-        </div>
-        <div className="  mt-0 ml-5 flex flex-col bg-sky-100 p-5">
-          {data?.tags?.map((gameTags, index) => (
-            <>
-              <span className="p-0 m-0" key={index}>
-                {gameTags.name}
-              </span>
-            </>
-          ))}
-        </div>
-      </div>
+    <div className=" px-52 mt-20">
+      {data?.map((game, index) => (
+        <React.Fragment key={index}>
+          <div className="bg-gray-600 p-5 text-white rounded-md flex justify-between">
+            <h1 className="text-2xl ">{game?.name}</h1>
+            <Button className="hover:none" onClick={() => newForm(game?.name)}>
+              Yeni Konu
+            </Button>
+          </div>
+          <div className="flex justify-center gap-5 my-5">
+            <div>
+              <Button className="hover:bg-white">Forumlar</Button>
+            </div>
+            <div>
+              <Button className="hover:bg-white">Videolar</Button>
+            </div>
+          </div>
+          <div className="mt-5 flex justify-between">
+            <div className="w-3/4">
+              <GameDetailsComponent
+                name={game?.name || ""}
+                gamePosts={game.gamePosts}
+              />
+            </div>
+            <div className="mt-0 ml-5 flex flex-col bg-sky-100 w-24 h-48"></div>
+          </div>
+        </React.Fragment>
+      ))}
     </div>
   );
 }

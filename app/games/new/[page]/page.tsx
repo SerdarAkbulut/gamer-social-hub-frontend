@@ -12,15 +12,15 @@ function NewGames() {
 
   const initialPage = Number(params.page) || 1;
   const [page, setPage] = useState(initialPage);
-  useEffect(() => {
-    router.push(`/games/new/${page}`);
-  }, [page, router]);
 
-  const { data, isLoading, isError, isFetching, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["games", page],
     queryFn: () => getNewestGames(page),
   });
-
+  useEffect(() => {
+    refetch();
+    router.push(`/games/new/${page}`);
+  }, [page, router]);
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
   return (

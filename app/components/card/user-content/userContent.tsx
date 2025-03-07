@@ -1,22 +1,30 @@
 import React from "react";
-
-function UserContent() {
+interface gamePosts {
+  postTitle?: string;
+  gameName?: string;
+  postText?: string;
+}
+const UserContent: React.FC<gamePosts> = ({
+  gameName,
+  postText,
+  postTitle,
+}) => {
   return (
     <>
-      <div className="flex flex-col shadow-xl w-full p-5 bg-gray-300 rounded-md mt-5">
+      <div className="flex flex-col shadow-xl w-full p-5 bg-gray-300 rounded-md ">
         <div className="flex flex-col">
           <h1 className="text-2xl">User Name</h1>
           <hr />
         </div>
         <div className="flex gap-5  ">
-          <h4 className="text-lg">İtem Önerisi</h4>
+          <h4 className="text-lg">{postTitle}</h4>
           <a href="#" className="text-lg text-gray-400">
-            Game
+            {gameName}
           </a>
         </div>
-        <div>konu</div>
+        <div>{postText}</div>
       </div>
     </>
   );
-}
+};
 export default UserContent;

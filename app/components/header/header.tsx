@@ -31,11 +31,35 @@ const Header: React.FC = () => {
       <div className="bg-gray-500 text-white p-4 flex w-full ">
         <div className="flex gap-2">
           <Link href="/">Logo</Link>
-          <Link href="/games/1" className="ml-8">
-            Populer Games
+          <Link
+            href="/games/1"
+            className="ml-8"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/games/1";
+            }}
+          >
+            Popüler oyunlar
           </Link>
-          <Link href="/games/new/1">Newest Games</Link>
-          <Link href="/games/upcoming/1">Upcoming Games</Link>
+          <Link
+            href="/games/new/1"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/games/new/1";
+            }}
+          >
+            Yeni Oyunlar
+          </Link>
+
+          <Link
+            href="/games/upcoming/1"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/games/upcoming/1";
+            }}
+          >
+            Gelecek Oyunlar
+          </Link>
         </div>
         <div className="inline-flex w-full justify-center h-full">
           <TextField
@@ -64,10 +88,12 @@ const Header: React.FC = () => {
             : "opacity-0 scale-95 pointer-events-none"
         }`}
               >
-                <div className="flex-col">
-                  <div>Follow games</div>
-                  <div className="mt-1">Liked games</div>
-                  <div className="mt-1">Logout</div>
+                <div className="flex flex-col">
+                  <Link href="/favorited-games">Takip edilenler</Link>
+                  <Link href="/liked-games" className="mt-1">
+                    Beğenilenler
+                  </Link>
+                  <div className="mt-1">Çıkış</div>
                 </div>
               </div>
             </div>

@@ -6,6 +6,12 @@ export const getNewestGames = async (page: number) => {
   });
   return response.data;
 };
+export const getPopulerGames = async (page: number) => {
+  const response = await apiClient.get("/games", {
+    params: { page },
+  });
+  return response.data;
+};
 
 export const getSearch = async (q: string, page: number) => {
   const response = await apiClient.get("/search", {
