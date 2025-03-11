@@ -17,7 +17,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <main className="flex-grow mt-[60px]">{children}</main>
           <Footer />
         </ClientProviders>
-        <ToastContainer /> {/* Burada olması daha iyi olur */}
+        <ToastContainer />
       </body>
     </html>
   );

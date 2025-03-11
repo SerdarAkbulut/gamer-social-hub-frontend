@@ -1,19 +1,19 @@
 "use client";
 import { Button, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { newPost } from "../api/services/postServices";
 import { toast } from "react-toastify";
 
 function NewPost() {
-  const [gameId, setGameId] = useState<string | null>(null);
+  const [gameId, setGameId] = useState<number | null>(null);
   const [gameName, setGameName] = useState<string | null>(null);
 
   useEffect(() => {
     const storedGameId = localStorage.getItem("gameId");
-    const cleanedGameId = storedGameId?.replace(/^"|"$/g, "") || null;
-    setGameId(cleanedGameId);
+
+    setGameId(storedGameId);
 
     const storedGameName = localStorage.getItem("gameName");
     setGameName(storedGameName || null);

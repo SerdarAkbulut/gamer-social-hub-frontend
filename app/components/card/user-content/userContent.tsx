@@ -3,8 +3,10 @@ interface gamePosts {
   postTitle?: string;
   gameName?: string;
   postText?: string;
+  userName: string;
 }
 const UserContent: React.FC<gamePosts> = ({
+  userName,
   gameName,
   postText,
   postTitle,
@@ -13,14 +15,14 @@ const UserContent: React.FC<gamePosts> = ({
     <>
       <div className="flex flex-col shadow-xl w-full p-5 bg-gray-300 rounded-md ">
         <div className="flex flex-col">
-          <h1 className="text-2xl">User Name</h1>
+          <h1 className="text-2xl text-blue-400">{userName}</h1>
           <hr />
         </div>
         <div className="flex gap-5  ">
-          <h4 className="text-lg">{postTitle}</h4>
           <a href="#" className="text-lg text-gray-400">
-            {gameName}
+            {gameName}:
           </a>
+          <h4 className="text-lg">{postTitle}</h4>
         </div>
         <div>{postText}</div>
       </div>

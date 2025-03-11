@@ -39,3 +39,13 @@ export const getGamePosts = async (gameId: number) => {
     throw new Error("Veri alınırken bir hata oluştu.");
   }
 };
+
+export const getFavoritedGamesPosts = async () => {
+  try {
+    const response = await apiClient.get("/favoritedGamesPost");
+    return response.data;
+  } catch (error) {
+    console.error("Hata:", error);
+    throw new Error("Veri alınırken bir hata oluştu.");
+  }
+};
