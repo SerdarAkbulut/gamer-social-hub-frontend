@@ -4,13 +4,15 @@ interface GameDetailsProps {
   name: string;
   gamePosts: [];
 }
-
+debugger;
 const GameDetailsComponent: React.FC<GameDetailsProps> = ({ gamePosts }) => {
   return (
     <div className="flex flex-col gap-5">
       {gamePosts.length > 0 ? (
         gamePosts.map((item, index) => (
           <UserContent
+            postId={item.id}
+            userName={item.user.userName}
             gameName={item.gameName}
             postText={item.postText}
             postTitle={item.postTitle}

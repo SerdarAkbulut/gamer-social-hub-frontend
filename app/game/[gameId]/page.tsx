@@ -7,6 +7,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Button } from "@mui/material";
 import { useRouter, useParams } from "next/navigation";
+import AllPosts from "@/app/components/card/posts/all-posts";
+import { getallPost } from "@/app/api/services/postServices";
 
 function GameDetails() {
   const router = useRouter();
@@ -33,6 +35,11 @@ function GameDetails() {
     enabled: !!numberGameId,
   });
 
+  const { data: posts } = useQuery({
+    queryKey: ["AllPosts"],
+    queryFn: () => getallPost(),
+  });
+
   const newForm = (gameName: string) => {
     localStorage.setItem("gameName", gameName.toString());
     router.push("/new-post");
@@ -44,7 +51,10 @@ function GameDetails() {
         <React.Fragment key={index}>
           <div className="bg-gray-600 p-5 text-white rounded-md flex justify-between">
             <h1 className="text-2xl ">{game?.name}</h1>
-            <Button className="hover:none" onClick={() => newForm(game?.name)}>
+            <Button
+              className="hover:none text-white"
+              onClick={() => newForm(game?.name)}
+            >
               Yeni Konu
             </Button>
           </div>
@@ -63,7 +73,19 @@ function GameDetails() {
                 gamePosts={game.gamePosts}
               />
             </div>
-            <div className="mt-0 ml-5 flex flex-col bg-sky-100 w-24 h-48"></div>
+            <div className="mt-0 ml-5 flex flex-col bg-sky-100 w-1/3 p-5 h-full rounded-md">
+              {posts.map((item, index) => (
+                <>
+                  <div className="  gap-8 p-2">
+                    <AllPosts
+                      postText={item.postText}
+                      postTitle={item.postTitle}
+                      key={index}
+                    />
+                  </div>
+                </>
+              ))}
+            </div>
           </div>
         </React.Fragment>
       ))}

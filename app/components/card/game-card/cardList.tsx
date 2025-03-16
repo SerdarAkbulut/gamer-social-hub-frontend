@@ -84,122 +84,88 @@ const CardList: React.FC<PageProps> = ({ data, refetch }) => {
   };
 
   return (
-    <div className="grid grid-cols-6 gap-5 mt-12">
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
       {data?.map((game: any, index: number) => (
         <Card
           key={index}
-          className="h-15 flex flex-col border-[1px] bg-slate-200"
+          className="flex flex-col border border-gray-300 bg-white rounded-lg shadow-md hover:shadow-xl transition-transform transform hover:scale-105"
         >
-          <CardHeader subheader={game.name} className="h-20" />
+          <CardHeader
+            subheader={game.name}
+            className="text-lg font-bold text-gray-700 px-4 py-2"
+          />
+
           <Link href={`/game/${game.id}`}>
             <CardMedia
               component="img"
               image={game?.cover_url}
-              alt="resim bulunamadı"
-              className="mt-1 h-[300px]"
+              alt="Resim Bulunamadı"
+              className="object-cover h-[300px] w-full "
             />
           </Link>
-          <CardContent className="flex gap-5">
-            <div>
+
+          <CardContent className="flex items-center justify-between px-4 py-3">
+            <div className="flex items-center gap-4">
               <motion.div
-                animate={{
-                  scale: like[game.id]
-                    ? game.isLiked === true
-                      ? 0.7 // Eğer beğenildiyse küçült
-                      : game.isLiked === false
-                      ? 1.5 // Eğer beğenilmediyse büyüt
-                      : 1.5 // Eğer isLiked null ise, biraz büyüt
-                    : 1, // Varsayılan durumda normal boyutta kal
-                }}
-                transition={{ duration: 0.6, ease: "circInOut" }}
+                animate={{ scale: like[game.id] ? 1.2 : 1 }}
+                transition={{ duration: 0.3 }}
               >
                 <ThumbUpAltIcon
-                  className={`flex self-center hover:cursor-pointer ${
-                    game.isLiked === true ? "text-blue-600" : ""
+                  className={`cursor-pointer ${
+                    game.isLiked ? "text-blue-500" : "text-gray-400"
                   }`}
                   onClick={() => {
                     liked({
                       gameId: game.id,
                       gameName: game.name,
-                      gameImage: game?.cover_url,
+                      gameImage: game.cover_url,
                       isLiked: true,
                     });
                     handleLike(game.id);
                   }}
                 />
               </motion.div>
-              <span className="text-gray-400 flex justify-center">50</span>
-            </div>
 
-            <div>
               <motion.div
-                animate={{
-                  scale: disLike[game.id]
-                    ? game.isLiked === false
-                      ? 1.5 // Eğer beğenildiyse küçült
-                      : game.isLiked === true
-                      ? 0.7 // Eğer beğenilmediyse büyüt
-                      : 0.7 // Eğer isLiked null ise, biraz büyüt
-                    : 1, // Varsayılan durumda normal boyutta kal
-                }}
-                transition={{ duration: 0.6, ease: "circInOut" }}
+                animate={{ scale: disLike[game.id] ? 1.2 : 1 }}
+                transition={{ duration: 0.3 }}
               >
                 <ThumbDownAltIcon
-                  className={`flex self-center hover:cursor-pointer ${
-                    game.isLiked === false ? "text-red-600" : ""
+                  className={`cursor-pointer ${
+                    game.isLiked === false ? "text-red-500" : "text-gray-400"
                   }`}
                   onClick={() => {
                     liked({
                       gameId: game.id,
                       gameName: game.name,
-                      gameImage: game?.cover_url,
+                      gameImage: game.cover_url,
                       isLiked: false,
                     });
                     handleDisLike(game.id);
                   }}
                 />
               </motion.div>
-              <span className="text-gray-400 flex justify-center">50</span>
             </div>
 
-            <div className="flex justify-end w-full">
-              {game.isFavorited ? (
-                <motion.div>
-                  <FavoriteIcon
-                    className="flex justify-end hover:cursor-pointer text-red-500"
-                    onClick={() => {
-                      favorited({
-                        gameId: game.id,
-                        gameName: game.name,
-                        gameImage: game?.cover_url,
-                        isFavorited: false,
-                      });
-                      handleFavorite(game.id);
-                    }}
-                  />
-                </motion.div>
-              ) : (
-                <motion.div
-                  animate={{
-                    scale: favorite[game.id] ? [1, 2] : 1,
-                  }}
-                  transition={{ duration: 1, ease: "circInOut" }}
-                >
-                  <FavoriteIcon
-                    className="flex justify-end hover:cursor-pointer text-gray-500"
-                    onClick={() => {
-                      favorited({
-                        gameId: game.id,
-                        gameName: game.name,
-                        gameImage: game?.cover_url,
-                        isFavorited: true,
-                      });
-                      handleFavorite(game.id);
-                    }}
-                  />
-                </motion.div>
-              )}
-            </div>
+            <motion.div
+              animate={{ scale: favorite[game.id] ? [1, 1.2, 1] : 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <FavoriteIcon
+                className={`cursor-pointer ${
+                  game.isFavorited ? "text-red-500" : "text-gray-400"
+                }`}
+                onClick={() => {
+                  favorited({
+                    gameId: game.id,
+                    gameName: game.name,
+                    gameImage: game.cover_url,
+                    isFavorited: !game.isFavorited,
+                  });
+                  handleFavorite(game.id);
+                }}
+              />
+            </motion.div>
           </CardContent>
         </Card>
       ))}

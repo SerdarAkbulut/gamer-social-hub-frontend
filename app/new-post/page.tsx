@@ -32,7 +32,6 @@ function NewPost() {
     <div className="mt-20 flex justify-center">
       <div className="w-1/2 justify-center flex">
         <div className="flex flex-col gap-5 w-1/2">
-          {/* Formik Kullanımı */}
           <Formik
             initialValues={{ postTitle: "", postText: "" }}
             onSubmit={(values, { resetForm }) => {
