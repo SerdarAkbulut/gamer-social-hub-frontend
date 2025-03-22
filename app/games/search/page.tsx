@@ -16,8 +16,12 @@ export default function Search() {
   console.log(data);
 
   return (
-    <div>
-      <CardList data={data}></CardList>
+    <div className="px-28">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
+        {data?.map((game: any, index: number) => (
+          <CardList key={index} game={game} refetch={refetch} />
+        ))}
+      </div>
       <div className="flex">
         <button onClick={() => setPage(page + 1)}>Arttır</button>
       </div>

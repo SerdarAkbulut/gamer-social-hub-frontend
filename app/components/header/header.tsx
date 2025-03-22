@@ -91,6 +91,7 @@ const Header: React.FC = () => {
               alignItems: "center",
               width: 400,
             }}
+            className="ml-14"
           >
             <IconButton sx={{ p: "10px" }} aria-label="menu">
               <MenuIcon />

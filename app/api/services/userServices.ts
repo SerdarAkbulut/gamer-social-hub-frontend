@@ -63,7 +63,33 @@ export const loginUser = async (email: string, password: string) => {
     });
 
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
+    throw error;
+  }
+};
+export const getUserFavoritedGames = async (userId: number) => {
+  try {
+    const response = await apiClient.get(`/userFavoritedGames/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserLikedGames = async (userId: number) => {
+  try {
+    const response = await apiClient.get(`/userLikedGames/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserPosts = async (userId: number) => {
+  try {
+    const response = await apiClient.get(`/user-posts/${userId}`);
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };

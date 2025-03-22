@@ -5,9 +5,10 @@ interface GamePosts {
   postTitle?: string;
   gameName?: string;
   postText?: string;
-  userName: string;
+  userName?: string;
   gameId?: number;
   postId: number;
+  userId?: number;
 }
 
 const UserContent: React.FC<GamePosts> = ({
@@ -17,11 +18,17 @@ const UserContent: React.FC<GamePosts> = ({
   gameName,
   postText,
   postTitle,
+  userId,
 }) => {
   return (
     <div className="flex flex-col w-full p-6 bg-white shadow-lg rounded-lg border border-gray-200 transition-all hover:shadow-2xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gray-700">{userName}</h1>
+        <Link
+          href={`user/${userId}`}
+          className="text-xl font-bold text-gray-700"
+        >
+          {userName}
+        </Link>
         {gameName && (
           <Link
             href={`/game/${gameId}`}

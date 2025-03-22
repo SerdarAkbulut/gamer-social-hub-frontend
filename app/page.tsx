@@ -14,6 +14,7 @@ const Page = () => {
       {data?.map((items, index) => (
         <>
           <UserContent
+            userId={items.userId}
             postId={items.id}
             gameId={items.gameId}
             userName={items.user.userName}

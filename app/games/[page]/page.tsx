@@ -32,7 +32,11 @@ function GameList() {
   return (
     <>
       <div className="px-28">
-        <CardList data={data} refetch={refetch} />
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
+          {data?.map((game: any, index: number) => (
+            <CardList key={index} game={game} refetch={refetch} />
+          ))}
+        </div>
         <div className="flex justify-center  gap-4 mt-5">
           <Button
             variant="contained"

@@ -1,17 +1,16 @@
 import React from "react";
 
-interface props {
+interface PostProps {
   postTitle: string;
   postText: string;
 }
-const AllPosts: React.FC<props> = ({ postText, postTitle }) => {
+
+const AllPosts: React.FC<PostProps> = ({ postText, postTitle }) => {
   return (
-    <>
-      <div className="flex flex-col gap-1 border-2 p-3 border-gray-500 rounded-md">
-        <div>{postTitle}</div>
-        <div>{postText}</div>
-      </div>
-    </>
+    <div className="border border-gray-300 p-4 rounded-lg shadow-md bg-white">
+      <h3 className="text-lg font-semibold text-gray-700">{postTitle}</h3>
+      <p className="text-gray-600 mt-2">{postText}</p>
+    </div>
   );
 };
 

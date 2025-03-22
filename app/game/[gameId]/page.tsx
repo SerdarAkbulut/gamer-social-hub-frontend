@@ -1,96 +1,100 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import GameDetailsComponent from "../components/gameDetails";
-import { getGameDetails } from "@/app/api/services/gameServices";
-import "swiper/css";
-import "swiper/css/pagination";
+import { useEffect } from "react";
 import { Button } from "@mui/material";
 import { useRouter, useParams } from "next/navigation";
+import "swiper/css";
+import "swiper/css/pagination";
+
+import GameDetailsComponent from "../components/gameDetails";
 import AllPosts from "@/app/components/card/posts/all-posts";
+
+import { getGameDetails } from "@/app/api/services/gameServices";
 import { getallPost } from "@/app/api/services/postServices";
 
-function GameDetails() {
+const GameDetails = () => {
   const router = useRouter();
   const params = useParams();
-  const [gameId, setGameId] = useState<string | null>(null);
+  const gameId = params?.gameId ? parseInt(params.gameId, 10) : null;
 
-  // localStorage işlemlerini sadece tarayıcıda çalıştır
   useEffect(() => {
-    if (typeof window !== "undefined" && params?.gameId) {
-      localStorage.setItem("gameId", params.gameId.toString());
-      setGameId(params.gameId); // gameId'yi state'e kaydet
+    if (typeof window !== "undefined" && gameId) {
+      localStorage.setItem("gameId", gameId.toString());
     }
-  }, [params?.gameId]);
+  }, [gameId]);
 
-  // gameId'yi number türüne dönüştürme
-  const numberGameId = gameId
-    ? parseInt(gameId.replace(/^"|"$/g, ""), 10)
-    : null;
-
-  const { data } = useQuery({
-    queryKey: ["game", numberGameId],
-    queryFn: () =>
-      numberGameId ? getGameDetails(numberGameId) : Promise.resolve(null), // gameId null ise sorgu yapma
-    enabled: !!numberGameId,
+  const { data: gameDetails } = useQuery({
+    queryKey: ["game", gameId],
+    queryFn: () => (gameId ? getGameDetails(gameId) : Promise.resolve(null)),
+    enabled: !!gameId,
   });
 
   const { data: posts } = useQuery({
     queryKey: ["AllPosts"],
-    queryFn: () => getallPost(),
+    queryFn: getallPost,
   });
 
-  const newForm = (gameName: string) => {
-    localStorage.setItem("gameName", gameName.toString());
+  const handleNewPost = (gameName: string) => {
+    localStorage.setItem("gameName", gameName);
     router.push("/new-post");
   };
 
   return (
-    <div className=" px-52 mt-20">
-      {data?.map((game, index) => (
-        <React.Fragment key={index}>
-          <div className="bg-gray-600 p-5 text-white rounded-md flex justify-between">
-            <h1 className="text-2xl ">{game?.name}</h1>
+    <div className="px-6 md:px-20 lg:px-40 mt-16 space-y-8">
+      {gameDetails?.map((game, index) => (
+        <div key={index} className="space-y-6">
+          {/* Üst Başlık ve Yeni Konu Butonu */}
+          <div className="bg-gradient-to-r from-gray-800 to-gray-700 p-6 text-white rounded-lg flex justify-between items-center shadow-lg">
+            <h1 className="text-3xl font-bold">{game.name}</h1>
             <Button
-              className="hover:none text-white"
-              onClick={() => newForm(game?.name)}
+              variant="contained"
+              color="primary"
+              onClick={() => handleNewPost(game.name)}
             >
               Yeni Konu
             </Button>
           </div>
-          <div className="flex justify-center gap-5 my-5">
-            <div>
-              <Button className="hover:bg-white">Forumlar</Button>
-            </div>
-            <div>
-              <Button className="hover:bg-white">Videolar</Button>
-            </div>
+
+          {/* Menü Butonları */}
+          <div className="flex justify-center gap-6">
+            <Button variant="outlined" className="hover:bg-gray-100 transition">
+              Forumlar
+            </Button>
+            <Button variant="outlined" className="hover:bg-gray-100 transition">
+              Videolar
+            </Button>
           </div>
-          <div className="mt-5 flex justify-between">
-            <div className="w-3/4">
+
+          {/* İçerik Bölümü */}
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Oyun Detayları */}
+            <div className="lg:w-2/3">
               <GameDetailsComponent
-                name={game?.name || ""}
+                name={game.name}
                 gamePosts={game.gamePosts}
               />
             </div>
-            <div className="mt-0 ml-5 flex flex-col bg-sky-100 w-1/3 p-5 h-full rounded-md">
-              {posts.map((item, index) => (
-                <>
-                  <div className="  gap-8 p-2">
-                    <AllPosts
-                      postText={item.postText}
-                      postTitle={item.postTitle}
-                      key={index}
-                    />
-                  </div>
-                </>
-              ))}
+
+            {/* Son Konular / Postlar */}
+            <div className="lg:w-1/3 bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                Son Konular
+              </h2>
+              <div className="space-y-4">
+                {posts?.map((post, idx) => (
+                  <AllPosts
+                    key={idx}
+                    postTitle={post.postTitle}
+                    postText={post.postText}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </React.Fragment>
+        </div>
       ))}
     </div>
   );
-}
+};
 
 export default GameDetails;
