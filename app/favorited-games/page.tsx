@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 import { myFavoritedGames } from "@/app/api/services/likedGames";
-import LikedGamesCard from "../components/card/liked-games/likedGames";
+import CardList from "../components/card/game-card/cardList";
 
 function LikedGames() {
   const params = useParams();
@@ -23,7 +23,11 @@ function LikedGames() {
   return (
     <>
       <div className="px-28 mt-28">
-        <LikedGamesCard data={data} refetch={refetch} />
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
+          {data?.map((game: any, index: number) => (
+            <CardList key={index} game={game} refetch={refetch} />
+          ))}
+        </div>
         <div className="flex justify-center  gap-4 mt-5">
           <Button
             variant="contained"
