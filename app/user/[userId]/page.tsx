@@ -1,20 +1,20 @@
 "use client";
-import { FormControl, MenuItem } from "@mui/material";
-import React, { useState } from "react";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { Avatar, Button, Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import Following from "../following/following";
 import Favorited from "../favorited/favorited";
 import Liked from "../liked/liked";
 import { useParams } from "next/navigation";
 import UserPosts from "../posts/page";
+import { useRecoilState } from "recoil";
+import { profileBgImage } from "@/app/state/atoms";
 
 function UserPage() {
   const [selectedOption, setSelectedOption] = useState("40");
+  const [bgImage, setBgImage] = useRecoilState(profileBgImage);
   const params = useParams();
   const userId = params.userId.toString();
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedOption(event.target.value);
-  };
+
   const renderComponent = () => {
     switch (selectedOption) {
       case "10":
@@ -29,30 +29,75 @@ function UserPage() {
         return null;
     }
   };
+  useEffect(() => {
+    setBgImage(
+      "https://static.birgun.net/resim/haber/2024/04/20/netflix-acikladi-the-witcher-final-yapiyor.png"
+    );
+  }, []);
 
   return (
-    <div className="mt-20 px-44 ">
+    <div className="mt-20 px-44  ">
       <div>
-        <div className="bg-blue-600 text-white p-6 rounded-lg flex justify-between">
-          <h1 className="text-3xl self-center">Serdar</h1>
-          <button className="text-lg border-2 bg-red-700 rounded-md p-2 hover:bg-transparent ">
-            Takip et
-          </button>
+        <div className="flex justify-center">
+          <div className=" ">
+            <div className=" "></div>
+
+            <div className=""></div>
+
+            <div className="z-10 text-white flex flex-col  gap-4  p-5 bg-black bg-opacity-45 rounded-md">
+              <div className="flex  justify-center mt-4 gap-2">
+                <Stack>
+                  <Avatar
+                    alt="Profile"
+                    src={"/profile.jpg"}
+                    className="h-20 w-20"
+                  />
+                </Stack>
+                <h1 className="text-3xl text-center flex self-center ">
+                  Serdar asdsadaasdassadasdad
+                </h1>
+              </div>
+              <div className="flex justify-center ">
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  sx={{ textTransform: "none" }}
+                  className="inline"
+                >
+                  Takip Et
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
-        <FormControl variant="standard" sx={{ minWidth: 120 }} className="mt-2">
-          <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
-            value={selectedOption}
-            onChange={handleChange}
-            label="Seçenek"
+
+        <div className="flex gap-5 justify-end mr-5">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => setSelectedOption("40")}
+            sx={{ textTransform: "none" }}
           >
-            <MenuItem value="40">Paylaşımlar</MenuItem>
-            {/* <MenuItem value="10">Takip ettikleri</MenuItem> */}
-            <MenuItem value="20">Favori oyunları</MenuItem>
-            <MenuItem value="30">Beğendiği oyunlar</MenuItem>
-          </Select>
-        </FormControl>
+            Paylaşımlar
+          </Button>
+          <Button
+            color="primary"
+            variant="text"
+            onClick={() => setSelectedOption("20")}
+            sx={{ textTransform: "none" }}
+          >
+            Favori oyunlar
+          </Button>
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => setSelectedOption("30")}
+            sx={{ textTransform: "none" }}
+          >
+            Beğendiği oyunlar
+          </Button>
+        </div>
         <div className="mt-4 ">{renderComponent()}</div>
       </div>
     </div>

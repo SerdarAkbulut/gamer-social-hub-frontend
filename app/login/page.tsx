@@ -4,12 +4,14 @@ import { loginUser } from "../api/services/userServices";
 import { Button, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useSetRecoilState } from "recoil"; // Recoil'den state güncelleme fonksiyonu
+import { tokenState } from "../state/atoms"; // tokenState'i import edin
 
 function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
+  const setToken = useSetRecoilState(tokenState); // token'ı global state'e kaydetmek için fonksiyon
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -22,18 +24,19 @@ function LoginPage() {
           localStorage.removeItem("token");
           localStorage.removeItem("token_expiry");
         } else {
-          setToken(storedToken);
+          setToken(storedToken); // token'ı global state'e kaydediyoruz
           router.push("/");
         }
       }
     }
   }, []);
 
-  function saveToken(token, timeout) {
+  function saveToken(token: string, timeout: number) {
     const now = new Date().getTime();
     const expiresAt = now + timeout * 1000;
     localStorage.setItem("token", token);
     localStorage.setItem("token_expiry", expiresAt.toString());
+    setToken(token); // token'ı state'e kaydediyoruz
   }
 
   const { mutate, isLoading, isError } = useMutation({
@@ -42,7 +45,6 @@ function LoginPage() {
       if (response?.token) {
         const timeOut = 30 * 24 * 60 * 60;
         saveToken(response.token, timeOut);
-        setToken(response.token);
         router.push("/");
       }
     },

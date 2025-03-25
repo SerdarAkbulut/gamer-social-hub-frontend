@@ -1,5 +1,8 @@
 import Link from "next/link";
 import React from "react";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { useMutation } from "@tanstack/react-query";
+import { featurePost } from "@/app/api/services/postServices";
 
 interface GamePosts {
   postTitle?: string;
@@ -20,11 +23,17 @@ const UserContent: React.FC<GamePosts> = ({
   postTitle,
   userId,
 }) => {
+  const { mutate } = useMutation({
+    mutationFn: () => featurePost(postId),
+    onSuccess: (response) => {
+      return response.data;
+    },
+  });
   return (
     <div className="flex flex-col w-full p-6 bg-white shadow-lg rounded-lg border border-gray-200 transition-all hover:shadow-2xl">
       <div className="flex items-center justify-between">
         <Link
-          href={`user/${userId}`}
+          href={`/user/${userId}`}
           className="text-xl font-bold text-gray-700"
         >
           {userName}
@@ -47,11 +56,15 @@ const UserContent: React.FC<GamePosts> = ({
 
       <p className="mt-2 text-gray-600 text-sm line-clamp-3">{postText}</p>
 
-      {/* <div className="mt-4 flex gap-3 text-gray-500 text-sm ">
-        <button className="hover:text-blue-500 transition">👍 Beğen</button>
-        <button className="hover:text-blue-500 transition">💬 Yorum</button>
-        <button className="hover:text-blue-500 transition">🔗 Paylaş</button>
-      </div> */}
+      <div className="mt-4 flex gap-3 text-gray-500 text-sm ">
+        <button
+          className="hover:text-blue-500 transition"
+          onClick={() => mutate()}
+        >
+          <ArrowUpwardIcon />
+        </button>
+        <button>💬 5</button>
+      </div>
     </div>
   );
 };

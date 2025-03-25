@@ -5,7 +5,6 @@ import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getPopulerGames } from "../../api/services/gameServices";
 import CardList from "../../components/card/game-card/cardList";
-import { myLikedGames } from "@/app/api/services/likedGames";
 
 function GameList() {
   const params = useParams();
@@ -13,11 +12,7 @@ function GameList() {
 
   const initialPage = Number(params.page) || 1;
   const [page, setPage] = useState(initialPage);
-  const { data: likedgame } = useQuery({
-    queryKey: ["likedGames"],
-    queryFn: () => myLikedGames(),
-  });
-  console.log(likedgame);
+
   const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: ["games", page],
     queryFn: () => getPopulerGames(page),
@@ -31,7 +26,7 @@ function GameList() {
 
   return (
     <>
-      <div className="px-28">
+      <div className="px-32">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
           {data?.map((game: any, index: number) => (
             <CardList key={index} game={game} refetch={refetch} />

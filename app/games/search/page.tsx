@@ -16,7 +16,7 @@ export default function Search() {
   console.log(data);
 
   return (
-    <div className="px-28">
+    <div className="px-32">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
         {data?.map((game: any, index: number) => (
           <CardList key={index} game={game} refetch={refetch} />

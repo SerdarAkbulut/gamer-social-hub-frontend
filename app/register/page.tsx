@@ -1,64 +1,76 @@
 "use client";
-import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
+import { Button, TextField } from "@mui/material";
 import { registerUser } from "../api/services/userServices";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
-function Register() {
-  const [userName, setUserName] = useState<string>();
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
+function RegisterPage() {
+  const [userName, setUserName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const router = useRouter();
 
-  const saveUser = () => {
-    registerUser(userName, email, password);
-  };
+  const { mutate, isLoading, isError, error } = useMutation({
+    mutationFn: () => registerUser(userName, email, password),
+    onSuccess: () => {
+      router.push("/login"); // Kayıt başarılıysa login sayfasına yönlendir
+    },
+    onError: (error) => {
+      console.error("Kayıt işlemi başarısız:", error);
+    },
+  });
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
-      <div className="flex-col border-[1px] border-gray-500  p-8 rounded-md shadow-lg">
+      <div className="flex-col border-[1px] border-gray-500 p-8 rounded-md shadow-lg">
         <div className="my-5">
           <h1 className="text-2xl font-bold">Sign up</h1>
         </div>
         <div className="flex flex-col gap-5">
           <TextField
             type="text"
-            placeholder="user name"
+            placeholder="User name"
             variant="filled"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
-          ></TextField>
+          />
           <TextField
             type="email"
-            placeholder="email"
+            placeholder="Email"
             variant="filled"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></TextField>
+          />
           <TextField
             type="password"
-            placeholder="password"
+            placeholder="Password"
             variant="filled"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></TextField>
+          />
         </div>
-        <div className="mt-5 ">
+        <div className="mt-5">
           <Button
-            onClick={() => saveUser()}
+            onClick={() => {
+              if (!userName || !email || !password) {
+                alert("Lütfen tüm alanları doldurunuz!");
+                return;
+              }
+              mutate();
+            }}
             variant="contained"
             className="text-white text-md font-bold bg-black"
             fullWidth
+            disabled={isLoading}
           >
-            Sign up
+            {isLoading ? "Signing up..." : "Sign up"}
           </Button>
-          <div className="flex items-center justify-center w-full my-4">
-            <hr className="flex-grow border-t border-gray-300" />
-            <span className="px-4 text-gray-500">or</span>
-            <hr className="flex-grow border-t border-gray-300" />
-          </div>
+          {isError && <p className="text-red-500 mt-2">{error?.message}</p>}
         </div>
       </div>
     </div>
   );
 }
 
-export default Register;
+export default RegisterPage;

@@ -5,7 +5,6 @@ import { Formik, Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { newPost } from "../api/services/postServices";
 import { toast } from "react-toastify";
-
 function NewPost() {
   const [gameId, setGameId] = useState<number | null>(null);
   const [gameName, setGameName] = useState<string | null>(null);

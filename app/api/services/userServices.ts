@@ -93,3 +93,31 @@ export const getUserPosts = async (userId: number) => {
     throw error;
   }
 };
+
+export const updateUser = async (
+  userName: string,
+  email: string,
+  currentPassword: string,
+  password: string
+) => {
+  try {
+    const response = await apiClient.put("/user", {
+      userName,
+      email,
+      currentPassword,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    toast.error(error?.response.data);
+  }
+};
+
+export const resetPassword = async (email: string) => {
+  try {
+    const response = await apiClient.post("/password-reset", { email });
+    return response.data;
+  } catch (error) {
+    toast.error(error?.response.data);
+  }
+};

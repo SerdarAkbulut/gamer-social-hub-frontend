@@ -4,7 +4,6 @@ interface GameDetailsProps {
   name: string;
   gamePosts: [];
 }
-debugger;
 const GameDetailsComponent: React.FC<GameDetailsProps> = ({ gamePosts }) => {
   return (
     <div className="flex flex-col gap-5">
@@ -17,6 +16,7 @@ const GameDetailsComponent: React.FC<GameDetailsProps> = ({ gamePosts }) => {
             postText={item.postText}
             postTitle={item.postTitle}
             key={index}
+            userId={item.userId}
           />
         ))
       ) : (

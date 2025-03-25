@@ -1,11 +1,5 @@
-import { searchState } from "@/app/state/atoms";
-import {
-  Divider,
-  IconButton,
-  InputBase,
-  Paper,
-  TextField,
-} from "@mui/material";
+import { searchState, tokenState } from "@/app/state/atoms";
+import { IconButton, InputBase, Paper } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
@@ -14,6 +8,7 @@ import { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 const Header: React.FC = () => {
+  const [useToken, setUseToken] = useRecoilState(tokenState);
   const [searchTerm, setSearchTerm] = useRecoilState(searchState);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
@@ -21,7 +16,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLogged(!!token); // Boolean olarak kaydet
-  }, []);
+  }, [useToken]);
   const router = useRouter();
 
   const handleKeyDown = async (
@@ -35,6 +30,12 @@ const Header: React.FC = () => {
   };
   const onClickSearch = async () => {
     router.push(`/games/search?q=${searchTerm}`);
+  };
+
+  const handleClickRemoveToken = () => {
+    const removeToken = localStorage.removeItem("token");
+    localStorage.removeItem("token_expiry");
+    setUseToken(removeToken);
   };
   return (
     <>
@@ -130,6 +131,12 @@ const Header: React.FC = () => {
                 }`}
               >
                 <Link
+                  href="/profile"
+                  className="block px-4 py-2 hover:bg-gray-200"
+                >
+                  Ayarlar
+                </Link>
+                <Link
                   href="/favorited-games"
                   className="block px-4 py-2 hover:bg-gray-200"
                 >
@@ -141,7 +148,10 @@ const Header: React.FC = () => {
                 >
                   Beğenilenler
                 </Link>
-                <button className="block w-full text-left px-4 py-2 hover:bg-gray-200">
+                <button
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                  onClick={() => handleClickRemoveToken()}
+                >
                   Çıkış Yap
                 </button>
               </div>

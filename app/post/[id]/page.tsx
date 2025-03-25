@@ -1,5 +1,6 @@
 "use client";
 import { getPostDetails } from "@/app/api/services/postServices";
+import AddComment from "@/app/components/comment/addComment";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
@@ -19,7 +20,7 @@ function ForumPage() {
   }, [data]);
 
   return (
-    <div className="mt-20 px-10 md:px-32 lg:px-72">
+    <div className="mt-20 px-72">
       {data?.map((post, index) => (
         <div
           key={index}
@@ -59,6 +60,9 @@ function ForumPage() {
           </div>
         </div>
       ))}
+      <div className="flex ml-5 mt-12">
+        <AddComment />
+      </div>
     </div>
   );
 }

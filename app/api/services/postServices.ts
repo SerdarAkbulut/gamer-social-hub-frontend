@@ -59,3 +59,26 @@ export const getPostDetails = async (postId: number) => {
     throw new Error("Veri alınırken bir hata oluştur");
   }
 };
+
+export const addReply = async (postId: number, reply: string) => {
+  try {
+    const response = await apiClient.post("/add-reply", {
+      postId,
+      reply,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const featurePost = async (postId: number) => {
+  try {
+    const response = await apiClient.post("/feature-post", {
+      postId,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
