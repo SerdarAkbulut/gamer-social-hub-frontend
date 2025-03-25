@@ -49,15 +49,15 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
           component="img"
           image={game.cover_url}
           alt="Resim Bulunamadı"
-          className="object-fill h-[320px] w-full"
+          className="object-fill h-[320px] w-full "
         />
       </Link>
       {!isHidden && (
         <CardContent className="flex items-center gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
             <motion.div
-              animate={{ scale: likeState === true ? 1.2 : 1 }}
-              transition={{ duration: 0.3 }}
+              animate={{ scale: likeState === true ? [1, 1.5, 1] : 1 }}
+              transition={{ duration: 1.0, ease: "circInOut" }}
             >
               <ThumbUpAltIcon
                 className={`cursor-pointer ${
@@ -72,8 +72,8 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
             </motion.div>
 
             <motion.div
-              animate={{ scale: likeState === false ? 1.2 : 1 }}
-              transition={{ duration: 0.3 }}
+              animate={{ scale: likeState === false ? [1, 1.5, 1] : 1 }}
+              transition={{ duration: 1.0, ease: "circInOut" }}
             >
               <ThumbDownAltIcon
                 className={`cursor-pointer ${
@@ -89,8 +89,8 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
           </div>
 
           <motion.div
-            animate={favorite ? { scale: [1, 1.5, 1] } : {}}
-            transition={{ duration: 0.8 }}
+            animate={favorite ? { scale: [1, 1.8, 1] } : 1}
+            transition={{ duration: 1.0, ease: "circInOut" }}
             className="ml-auto"
           >
             <FavoriteIcon
