@@ -8,12 +8,28 @@ import { useParams } from "next/navigation";
 import UserPosts from "../posts/page";
 import { useRecoilState } from "recoil";
 import { profileBgImage } from "@/app/state/atoms";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getUser } from "@/app/api/services/userServices";
+import { follow } from "@/app/api/services/followServices";
 
 function UserPage() {
   const [selectedOption, setSelectedOption] = useState("40");
   const [bgImage, setBgImage] = useRecoilState(profileBgImage);
   const params = useParams();
   const userId = params.userId.toString();
+
+  const { data, refetch } = useQuery({
+    queryKey: ["userDetail"],
+    queryFn: () => getUser(userId),
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: () => follow(userId),
+    onSuccess: (response) => {
+      refetch();
+      return response.data;
+    },
+  });
 
   const renderComponent = () => {
     switch (selectedOption) {
@@ -39,34 +55,39 @@ function UserPage() {
     <div className="mt-20 px-44  ">
       <div>
         <div className="flex justify-center">
-          <div className=" ">
-            <div className=" "></div>
-
-            <div className=""></div>
-
-            <div className="z-10 text-white flex flex-col  gap-4  p-5 bg-black bg-opacity-45 rounded-md">
-              <div className="flex  justify-center mt-4 gap-2">
-                <Stack>
-                  <Avatar
-                    alt="Profile"
-                    src={"/profile.jpg"}
-                    className="h-20 w-20"
-                  />
-                </Stack>
+          <div className="w-1/4 ">
+            <div className="z-10 text-black flex  gap-4 p-5  bg-[url('/profile.jpg')] h-24 rounded-md  bg-cover bg-center">
+              <div className="flex flex-col w-full justify-center mt-4 gap-2">
                 <h1 className="text-3xl text-center flex self-center ">
-                  Serdar asdsadaasdassadasdad
+                  {data?.user.userName}
                 </h1>
-              </div>
-              <div className="flex justify-center ">
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  sx={{ textTransform: "none" }}
-                  className="inline"
-                >
-                  Takip Et
-                </Button>
+                {data?.isFollowing === true ? (
+                  <div className="flex justify-center ">
+                    <Button
+                      size="small"
+                      color=""
+                      variant="outlined"
+                      sx={{ textTransform: "none" }}
+                      className="inline"
+                      onClick={() => mutate()}
+                    >
+                      Takipten çık
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex justify-center ">
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color=""
+                      sx={{ textTransform: "none" }}
+                      className="inline"
+                      onClick={() => mutate()}
+                    >
+                      Takip Et
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

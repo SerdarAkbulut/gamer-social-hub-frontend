@@ -161,10 +161,7 @@ const Header: React.FC = () => {
               <Link href="/login" className="hover:text-gray-300 transition">
                 Giriş Yap
               </Link>
-              <Link
-                href="/register"
-                className="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition"
-              >
+              <Link href="/register" className="hover:text-gray-300 transition">
                 Kayıt Ol
               </Link>
             </div>

@@ -35,10 +35,7 @@ const RecoilStateWrapper: React.FC<{ children: React.ReactNode }> = ({
   const [bgImage] = useRecoilState(profileBgImage);
 
   return (
-    <body
-      className="h-full flex flex-col bg-no-repeat bg-cover bg-center"
-      style={{ backgroundImage: `url(${bgImage})` }} // 🔹 Tailwind hatası düzeltildi
-    >
+    <body className="h-full flex flex-col ">
       <div className="fixed top-0 w-full z-50">
         <Header />
       </div>

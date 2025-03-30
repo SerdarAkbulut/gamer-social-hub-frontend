@@ -54,25 +54,25 @@ function LoginPage() {
     <div className="min-h-screen flex flex-col justify-center items-center">
       <div className="flex-col border-[1px] border-gray-500 p-8 rounded-md shadow-lg">
         <div className="my-5">
-          <h1 className="text-2xl font-bold">Sign in</h1>
+          <h1 className="text-2xl font-bold">Giriş Yap</h1>
         </div>
         <div className="flex flex-col gap-5">
           <TextField
             type="email"
-            placeholder="email"
+            placeholder="e-mail"
             variant="filled"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             type="password"
-            placeholder="password"
+            placeholder="Şifre"
             variant="filled"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="mt-5">
+        <div className="my-5 border-b-2 border-black pb-2">
           <Button
             onClick={() => {
               if (!email || !password) {
@@ -86,9 +86,11 @@ function LoginPage() {
             fullWidth
             disabled={isLoading}
           >
-            {isLoading ? "Signing in..." : "Sign in"}
+            Giriş
           </Button>
-          {isError && <p className="text-red-500 mt-2">Login failed!</p>}
+        </div>
+        <div className="flex justify-center">
+          <a href="/forgot-password">Şiremi unuttum</a>
         </div>
       </div>
     </div>

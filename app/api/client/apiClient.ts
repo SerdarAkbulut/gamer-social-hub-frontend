@@ -6,7 +6,12 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
-
+export const apiClientMedia = axios.create({
+  baseURL: "http://localhost:3000/api/",
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+});
 // 📌 İstek Yapılmadan Önce Token'ı Ekleyelim
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
@@ -18,6 +23,15 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
+apiClientMedia.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
 // 📌 API Hatalarını Yönetelim
 apiClient.interceptors.response.use(
   (response) => response,

@@ -8,6 +8,10 @@ import FollowGamesAndUser from "./components/mainpage/follow-games-user";
 const Page = () => {
   const [selectedOption, setSelectedOption] = useState("10");
 
+  const handleButtonClick = (option: string) => {
+    setSelectedOption((prev) => (prev === option ? "10" : option));
+  };
+
   const renderComponent = () => {
     switch (selectedOption) {
       case "10":
@@ -26,22 +30,23 @@ const Page = () => {
         return null;
     }
   };
+
   return (
     <div className="px-72 mt-32 flex flex-col gap-5">
       <div>
         <div className="flex gap-5 justify-end mr-5">
           <Button
             color="primary"
-            variant="text"
-            onClick={() => setSelectedOption("20")}
+            variant={selectedOption === "20" ? `contained` : `text`}
+            onClick={() => handleButtonClick("20")}
             sx={{ textTransform: "none" }}
           >
             Takip
           </Button>
           <Button
             color="primary"
-            variant="text"
-            onClick={() => setSelectedOption("30")}
+            variant={selectedOption === "30" ? `contained` : `text`}
+            onClick={() => handleButtonClick("30")}
             sx={{ textTransform: "none" }}
           >
             Öne Çıkanlar

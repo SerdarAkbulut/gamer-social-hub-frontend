@@ -1,6 +1,6 @@
 "use client";
 import { getPostDetails } from "@/app/api/services/postServices";
-import AddComment from "@/app/components/comment/addComment";
+import CommentPage from "@/app/components/comment/page";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
@@ -11,6 +11,7 @@ function ForumPage() {
   const { data } = useQuery({
     queryKey: ["postDetails", postId],
     queryFn: () => getPostDetails(postId),
+    staleTime: Infinity,
   });
 
   useEffect(() => {
@@ -21,7 +22,7 @@ function ForumPage() {
 
   return (
     <div className="mt-20 px-72">
-      {data?.map((post, index) => (
+      {data?.postDetails.map((post, index) => (
         <div
           key={index}
           className="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200"
@@ -61,7 +62,7 @@ function ForumPage() {
         </div>
       ))}
       <div className="flex ml-5 mt-12">
-        <AddComment />
+        <CommentPage></CommentPage>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
-import apiClient from "../client/apiClient";
+import apiClient, { apiClientMedia } from "../client/apiClient";
+import axios from "axios";
 
 interface User {
   userName: string;
@@ -9,6 +10,12 @@ export const getUsers = async (): Promise<User[]> => {
   const response = await apiClient.get("/users");
   return response.data;
 };
+
+export const getUser = async (id: number) => {
+  const response = await apiClient.get(`/user/${id}`);
+  return response.data;
+};
+
 export const registerUser = async (
   userName: string,
   email: string,
@@ -61,10 +68,10 @@ export const loginUser = async (email: string, password: string) => {
       email,
       password,
     });
-
+    debugger;
     return response.data;
   } catch (error) {
-    throw error;
+    toast.error(error.response.data);
   }
 };
 export const getUserFavoritedGames = async (userId: number) => {
@@ -113,11 +120,56 @@ export const updateUser = async (
   }
 };
 
-export const resetPassword = async (email: string) => {
+export const forgotPassowrd = async (email: string) => {
   try {
-    const response = await apiClient.post("/password-reset", { email });
+    const response = await apiClient.post("/forgot-password", { email });
+    toast.success(response.data.message);
+    return response; // Başarıyla döndür
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Bilinmeyen hata");
+    throw error.response ?? new Error("Bilinmeyen hata"); // Hata fırlat
+  }
+};
+
+export const resetPassword = async (token: string, newPassword: string) => {
+  try {
+    const response = await apiClient.post("/reset-password", {
+      token,
+      newPassword,
+    });
+    toast.success(response.data.message);
+    return response; // Başarıyla döndür
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    throw error.response ?? new Error("Bilinmeyen hata"); // Hata fırlat
+  }
+};
+
+export const uploadUserImage = async (file: Blob) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file, "cropped-image.jpg");
+
+    const response = await apiClientMedia.post("/upload-image", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
     return response.data;
   } catch (error) {
     toast.error(error?.response.data);
+    throw new Error("Resim yükleme başarısız.");
+  }
+};
+
+export const checkPasswordResetToken = async (token: string) => {
+  try {
+    const response = await apiClient.get(
+      `/check-reset-password-token/${token}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
   }
 };

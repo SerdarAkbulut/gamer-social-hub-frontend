@@ -1,3 +1,4 @@
+import ImageUploader from "@/app/components/cropper/imageCropper";
 import { Avatar, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 
@@ -24,7 +25,7 @@ function ProfileSettings() {
           Profil Ayarları
         </Typography>
 
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <div className="relative text-white hover:cursor-pointer border p-6 flex flex-col w-full h-28 justify-center  bg-center rounded-xl bg-black">
             <input
               type="file"
@@ -40,7 +41,8 @@ function ProfileSettings() {
           <Stack>
             <Avatar alt="Profile" src={"/profile.jpg"} className="h-32 w-32" />
           </Stack>
-        </div>
+        </div> */}
+        <ImageUploader></ImageUploader>
         <div className="mt-4" style={{ textAlign: "right" }}>
           <Button
             variant="contained"
