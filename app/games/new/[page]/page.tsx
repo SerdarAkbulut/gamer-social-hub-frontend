@@ -38,14 +38,14 @@ function NewGames() {
             disabled={page === 1}
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           >
-            Prev
+            Geri
           </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={() => setPage((prev) => prev + 1)}
           >
-            Next
+            İleri
           </Button>
         </div>
       </div>

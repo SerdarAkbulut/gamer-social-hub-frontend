@@ -55,9 +55,9 @@ function UserPage() {
     <div className="mt-20 px-44  ">
       <div>
         <div className="flex justify-center">
-          <div className="w-1/4 ">
-            <div className="z-10 text-black flex  gap-4 p-5  bg-[url('/profile.jpg')] h-24 rounded-md  bg-cover bg-center">
-              <div className="flex flex-col w-full justify-center mt-4 gap-2">
+          <div className="w-1/4  ">
+            <div className="z-10 text-black flex  gap-4  bg-[url('/profile.jpg')] h-24 w-80 rounded-md  bg-cover bg-center ">
+              <div className="flex flex-col w-full justify-center mt-4 gap-2 ">
                 <h1 className="text-3xl text-center flex self-center ">
                   {data?.user.userName}
                 </h1>

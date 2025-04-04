@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useMutation } from "@tanstack/react-query";
-import { featurePost } from "@/app/api/services/postServices";
+import { deleteMyPost, featurePost } from "@/app/api/services/postServices";
 
 interface GamePosts {
   postTitle?: string;
@@ -12,6 +12,7 @@ interface GamePosts {
   gameId?: number;
   postId: number;
   userId?: number;
+  deletePost?: boolean;
 }
 
 const UserContent: React.FC<GamePosts> = ({
@@ -22,6 +23,7 @@ const UserContent: React.FC<GamePosts> = ({
   postText,
   postTitle,
   userId,
+  deletePost,
 }) => {
   const { mutate } = useMutation({
     mutationFn: () => featurePost(postId),
@@ -29,6 +31,13 @@ const UserContent: React.FC<GamePosts> = ({
       return response.data;
     },
   });
+  const { mutate: deleteThisPost } = useMutation({
+    mutationFn: () => deleteMyPost(postId),
+    onSuccess: (response) => {
+      return response.data;
+    },
+  });
+
   return (
     <div className="flex flex-col w-full p-6 bg-white shadow-lg rounded-lg border border-gray-200 transition-all hover:shadow-2xl">
       <div className="flex items-center justify-between">
@@ -64,6 +73,16 @@ const UserContent: React.FC<GamePosts> = ({
           <ArrowUpwardIcon />
         </button>
         <button>💬 5</button>
+        {deletePost && (
+          <div className="flex justify-end w-full">
+            <a
+              className="hover:cursor-pointer text-xl mr-3 text-red-500"
+              onClick={() => deleteThisPost()}
+            >
+              Gönderiyi sil
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

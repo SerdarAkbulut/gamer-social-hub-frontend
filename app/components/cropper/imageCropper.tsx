@@ -9,8 +9,8 @@ export default function ImageUploader() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [crop, setCrop] = useState({
     unit: "px",
-    width: 350,
-    height: 200,
+    width: 320, // Başlangıçta 20rem = 320px
+    height: 96, // Başlangıçta 6rem = 96px
     x: 50,
     y: 50,
   });
@@ -54,8 +54,8 @@ export default function ImageUploader() {
       const scaleY = imgRef.current.naturalHeight / imgRef.current.height;
       const pixelRatio = window.devicePixelRatio;
 
-      canvasRef.current.width = 350 * pixelRatio;
-      canvasRef.current.height = 200 * pixelRatio;
+      canvasRef.current.width = crop.width * pixelRatio;
+      canvasRef.current.height = crop.height * pixelRatio;
 
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       ctx.imageSmoothingQuality = "high";
@@ -68,8 +68,8 @@ export default function ImageUploader() {
         crop.height * scaleY,
         0,
         0,
-        350,
-        200
+        crop.width,
+        crop.height
       );
     }
   };
@@ -108,7 +108,7 @@ export default function ImageUploader() {
       {/* Resim yükleme alanı */}
       <div
         {...getRootProps()}
-        className="border-2 border-dashed p-4 cursor-pointer w-80 text-center"
+        className="border-2 border-dashed p-4 cursor-pointer w-full max-w-md text-center"
       >
         <input {...getInputProps()} />
         <p>Bir resim sürükleyin veya tıklayın</p>
@@ -120,10 +120,10 @@ export default function ImageUploader() {
           <ReactCrop
             crop={crop}
             onChange={(newCrop) =>
-              setCrop({ ...newCrop, width: 350, height: 200 })
+              setCrop({ ...newCrop, width: 320, height: 96 })
             }
             onComplete={onCropComplete}
-            aspect={350 / 200}
+            aspect={320 / 96}
             keepSelection
             locked
           >
@@ -139,7 +139,10 @@ export default function ImageUploader() {
           <canvas
             ref={canvasRef}
             className="border object-cover"
-            style={{ width: "400px", height: "200px" }}
+            style={{
+              width: "50vw", // Dinamik genişlik (viewport genişliğine göre)
+              height: "15vw", // Dinamik yükseklik (viewport genişliğine göre)
+            }}
           />
         </div>
       )}

@@ -124,7 +124,7 @@ const Header: React.FC = () => {
                 <PersonIcon fontSize="large" />
               </button>
               <div
-                className={`absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-md overflow-hidden transform transition-all duration-300 ${
+                className={`absolute right-0 mt-2 w-48 text-md bg-white text-gray-800 rounded-md shadow-md overflow-hidden transform transition-all duration-300 ${
                   showUserMenu
                     ? "opacity-100 scale-100"
                     : "opacity-0 scale-95 pointer-events-none"
@@ -135,6 +135,18 @@ const Header: React.FC = () => {
                   className="block px-4 py-2 hover:bg-gray-200"
                 >
                   Ayarlar
+                </Link>
+                <Link
+                  href="/saved-posts"
+                  className="block px-4 py-2 hover:bg-gray-200"
+                >
+                  Kaydedilenler
+                </Link>
+                <Link
+                  href="/my-posts"
+                  className="block px-4 py-2 hover:bg-gray-200"
+                >
+                  Gönderilerim
                 </Link>
                 <Link
                   href="/favorited-games"

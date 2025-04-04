@@ -33,7 +33,7 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
 
   const { mutate: favorited } = useMutation({
     mutationFn: () =>
-      favoriteGame(game.id, game.name, game.cover_url, !favorite),
+      favoriteGame(game.id || game.gameId, game.name, game.cover_url, favorite),
     onSuccess: () => refetch(),
   });
 
@@ -98,7 +98,7 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
                 favorite ? "text-red-500" : "text-gray-400"
               }`}
               onClick={() => {
-                setFavorite((prev) => !prev);
+                setFavorite(favorite ? false : true);
                 favorited();
               }}
             />

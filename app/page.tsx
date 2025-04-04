@@ -4,6 +4,7 @@ import AllPost from "./components/mainpage/allpost";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import FollowGamesAndUser from "./components/mainpage/follow-games-user";
+import FeaturePosts from "./components/mainpage/feature-posts";
 
 const Page = () => {
   const [selectedOption, setSelectedOption] = useState("10");
@@ -24,6 +25,12 @@ const Page = () => {
         return (
           <div className="flex flex-col gap-5">
             <FollowGamesAndUser />
+          </div>
+        );
+      case "30":
+        return (
+          <div>
+            <FeaturePosts></FeaturePosts>
           </div>
         );
       default:

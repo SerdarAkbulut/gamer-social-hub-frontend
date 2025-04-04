@@ -12,18 +12,21 @@ const UserPosts: React.FC<UserProps> = ({ userId }) => {
     queryKey: ["UserPosts"],
     queryFn: () => getUserPosts(userId),
   });
-  console.log(data);
+  if (!data) return <p>Loading...</p>;
+  if (data.length === 0) return <p>Paylaşılan gönderi bulunmamaktadır</p>;
   return (
     <div className="flex flex-col gap-5">
       {data?.map((items, index) => (
         <>
           <UserContent
+            postId={items.id}
             gameName={items.gameName}
             postText={items.postText}
             postTitle={items.postTitle}
             gameId={items.gameId}
             userName={items.user.userName}
             userId={items.userId}
+            key={index}
           />
         </>
       ))}

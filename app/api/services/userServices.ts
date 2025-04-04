@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 import apiClient, { apiClientMedia } from "../client/apiClient";
-import axios from "axios";
 
 interface User {
   userName: string;
@@ -171,5 +170,25 @@ export const checkPasswordResetToken = async (token: string) => {
     return response.data;
   } catch (error) {
     throw new Error(error);
+  }
+};
+
+export const savePost = async (postId: number) => {
+  try {
+    const response = await apiClient.post("/save-post", {
+      postId: postId,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getUserSavedPosts = async () => {
+  try {
+    const response = await apiClient.get("/get-saved-posts");
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };

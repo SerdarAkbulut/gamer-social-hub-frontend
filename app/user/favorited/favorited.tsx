@@ -14,7 +14,7 @@ const Favorited: React.FC<UserProps> = ({ userId }) => {
   });
 
   if (!data) return <p>Loading...</p>; // Veriler gelene kadar yüklenme mesajı göster
-
+  if (data.length === 0) return <p>Favori oyunlar bulunmamaktadır</p>;
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
       {data.map((game: any, index: number) => (

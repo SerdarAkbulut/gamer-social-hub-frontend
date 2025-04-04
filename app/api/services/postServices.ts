@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import apiClient from "../client/apiClient";
 
 export const newPost = async (
@@ -80,5 +81,32 @@ export const featurePost = async (postId: number) => {
     return response.data;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getMyPosts = async () => {
+  try {
+    const response = await apiClient.get("/my-posts");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteMyPost = async (postId: number) => {
+  try {
+    const response = await apiClient.delete(`/delete-post/${postId}`);
+    return toast.success("Post silindi"), response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getOneCikanlar = async () => {
+  try {
+    const response = await apiClient.get("/feature-post");
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };

@@ -1,14 +1,24 @@
 "use client";
 import { getPostDetails } from "@/app/api/services/postServices";
 import CommentPage from "@/app/components/comment/page";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
-
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import SvgIcon from "@mui/icons-material/BookmarkBorder";
+import { savePost } from "@/app/api/services/userServices";
 function ForumPage() {
   const params = useParams();
   const postId = params.id.toString();
-  const { data } = useQuery({
+  const { mutate } = useMutation({
+    mutationFn: () => savePost(postId),
+    onSuccess: () => {
+      refetch();
+      console.log("Post kaydedildi");
+    },
+  });
+
+  const { data, refetch } = useQuery({
     queryKey: ["postDetails", postId],
     queryFn: () => getPostDetails(postId),
     staleTime: Infinity,
@@ -27,13 +37,24 @@ function ForumPage() {
           key={index}
           className="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200"
         >
-          <div className="bg-blue-600 text-white p-6">
-            <h1 className="text-xl font-semibold">{post.user.userName}</h1>
-            <h2 className="text-lg opacity-80">{post.gameName}</h2>
+          <div className="bg-blue-600 text-white p-6 flex justify-between items-start">
+            <div>
+              <h1 className="text-xl font-semibold">{post.user.userName}</h1>
+              <h2 className="text-lg opacity-80">{post.gameName}</h2>
+            </div>
+            <div>
+              <SvgIcon
+                component={BookmarkIcon}
+                inheritViewBox
+                className={`h-8 w-8 hover:cursor-pointer ${
+                  post.isSaved ? "text-black" : "text-white"
+                }`}
+                onClick={() => mutate()}
+              />
+            </div>
           </div>
-
           <div className="p-6">
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-xl font-bold text-gray-800">
               {post.postTitle}
             </h1>
             <p className="text-lg text-gray-700 mt-2">{post.postText}</p>
