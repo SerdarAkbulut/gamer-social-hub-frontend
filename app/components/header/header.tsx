@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
+import ClickAwayListener from "@mui/material/ClickAwayListener"; // ✅ EKLENDİ
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
@@ -118,7 +119,7 @@ const Header: React.FC = () => {
         </div>
 
         {/* Orta - Arama */}
-        <div className="flex w-full justify-center h-full  ">
+        <div className="flex w-full justify-center h-full">
           <Paper
             component="form"
             sx={{
@@ -148,58 +149,60 @@ const Header: React.FC = () => {
         {/* Sağ - Kullanıcı veya Giriş/Kayıt */}
         <div className="flex items-center gap-4">
           {isLogged ? (
-            <div className="relative">
-              <button
-                onClick={() => setShowUserMenu(!showUserMenu)}
-                className="hover:opacity-80"
-              >
-                <PersonIcon fontSize="large" />
-              </button>
-              <div
-                className={`absolute right-0 mt-2 w-48 text-md bg-white text-gray-800 rounded-md shadow-md overflow-hidden transform transition-all duration-300 ${
-                  showUserMenu
-                    ? "opacity-100 scale-100"
-                    : "opacity-0 scale-95 pointer-events-none"
-                }`}
-              >
-                <Link
-                  href="/profile"
-                  className="block px-4 py-2 hover:bg-gray-200"
-                >
-                  Ayarlar
-                </Link>
-                <Link
-                  href="/saved-posts"
-                  className="block px-4 py-2 hover:bg-gray-200"
-                >
-                  Kaydedilenler
-                </Link>
-                <Link
-                  href="/my-posts"
-                  className="block px-4 py-2 hover:bg-gray-200"
-                >
-                  Gönderilerim
-                </Link>
-                <Link
-                  href="/favorited-games"
-                  className="block px-4 py-2 hover:bg-gray-200"
-                >
-                  Takip Edilenler
-                </Link>
-                <Link
-                  href="/liked-games"
-                  className="block px-4 py-2 hover:bg-gray-200"
-                >
-                  Beğenilenler
-                </Link>
+            <ClickAwayListener onClickAway={() => setShowUserMenu(false)}>
+              <div className="relative">
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                  onClick={handleClickRemoveToken}
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="hover:opacity-80"
                 >
-                  Çıkış Yap
+                  <PersonIcon fontSize="large" />
                 </button>
+                <div
+                  className={`absolute right-0 mt-2 w-48 text-md bg-white text-gray-800 rounded-md shadow-md overflow-hidden transform transition-all duration-300 ${
+                    showUserMenu
+                      ? "opacity-100 scale-100"
+                      : "opacity-0 scale-95 pointer-events-none"
+                  }`}
+                >
+                  <Link
+                    href="/profile"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    Ayarlar
+                  </Link>
+                  <Link
+                    href="/saved-posts"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    Kaydedilenler
+                  </Link>
+                  <Link
+                    href="/my-posts"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    Gönderilerim
+                  </Link>
+                  <Link
+                    href="/favorited-games"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    Takip Edilenler
+                  </Link>
+                  <Link
+                    href="/liked-games"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    Beğenilenler
+                  </Link>
+                  <button
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                    onClick={handleClickRemoveToken}
+                  >
+                    Çıkış Yap
+                  </button>
+                </div>
               </div>
-            </div>
+            </ClickAwayListener>
           ) : (
             <div className="flex gap-2">
               <Link href="/login" className="hover:text-gray-300 transition">
