@@ -1,6 +1,7 @@
 "use client";
 import { getSearch } from "@/app/api/services/gameServices";
 import CardList from "@/app/components/card/game-card/cardList";
+import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
@@ -13,8 +14,15 @@ export default function Search() {
     queryKey: ["search", searchQuery, page],
     queryFn: () => getSearch(searchQuery, page),
   });
-  console.log(data);
-
+  if (data?.length === 0 || data === null) {
+    return (
+      <>
+        <div className="flex h-full items-center justify-center">
+          <h1>Oyun bulunamadı</h1>
+        </div>
+      </>
+    );
+  }
   return (
     <div className="px-32">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
@@ -22,8 +30,22 @@ export default function Search() {
           <CardList key={index} game={game} refetch={refetch} />
         ))}
       </div>
-      <div className="flex">
-        <button onClick={() => setPage(page + 1)}>Arttır</button>
+      <div className="flex justify-center  gap-4 mt-5">
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={page === 1}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+        >
+          Geri
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setPage((prev) => prev + 1)}
+        >
+          İleri
+        </Button>
       </div>
     </div>
   );

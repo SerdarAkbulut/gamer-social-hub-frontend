@@ -38,7 +38,7 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
   });
 
   return (
-    <Card className="flex flex-col border-2 border-gray-300 bg-white rounded-lg shadow-md hover:shadow-xl transition-transform transform hover:scale-105">
+    <Card className="flex flex-col border-2 border-gray-300 bg-white rounded-lg shadow-md hover:shadow-xl transition-transform transform hover:scale-105 ">
       <CardHeader
         subheader={game.name}
         className="text-lg font-bold text-gray-700  py-2 h-16 "

@@ -53,47 +53,41 @@ function UserPage() {
 
   return (
     <div className="mt-20 px-44  ">
-      <div>
-        <div className="flex justify-center">
-          <div className="w-1/4  ">
-            <div className="z-10 text-black flex  gap-4  bg-[url('/profile.jpg')] h-24 w-80 rounded-md  bg-cover bg-center ">
-              <div className="flex flex-col w-full justify-center mt-4 gap-2 ">
-                <h1 className="text-3xl text-center flex self-center ">
+      <div className="flex flex-col">
+        <div className="flex justify-center h-32">
+          <div className="w-1/3 relative h-full">
+            {/* Arka plan resmi */}
+            <div
+              className=" w-full rounded-2xl bg-center bg-cover relative overflow-hidden h-28 shadow-xl "
+              style={{
+                backgroundImage: `url(${data?.user.banner})`,
+                boxShadow:
+                  " 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+              }}
+            >
+              {/* Arka plan karartma katmanı */}
+              <div className="absolute inset-0 bg-black bg-opacity-60 rounded-md z-0" />
+
+              {/* İçerik katmanı */}
+              <div className="relative z-10 text-white flex flex-col items-center justify-center h-full gap-2">
+                <h1 className="text-3xl font-semibold drop-shadow-md">
                   {data?.user.userName}
                 </h1>
-                {data?.isFollowing === true ? (
-                  <div className="flex justify-center ">
-                    <Button
-                      size="small"
-                      color=""
-                      variant="outlined"
-                      sx={{ textTransform: "none" }}
-                      className="inline"
-                      onClick={() => mutate()}
-                    >
-                      Takipten çık
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex justify-center ">
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      color=""
-                      sx={{ textTransform: "none" }}
-                      className="inline"
-                      onClick={() => mutate()}
-                    >
-                      Takip Et
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           </div>
         </div>
-
-        <div className="flex gap-5 justify-end mr-5">
+        <div className="flex justify-center">
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={() => mutate()}
+            className="border border-blue-800 rounded-2xl"
+          >
+            {data?.isFollowing ? "Takipten çık" : "Takip Et"}
+          </Button>
+        </div>
+        <div className="flex gap-5 justify-end mr-5 mt-5">
           <Button
             color="primary"
             variant="contained"
