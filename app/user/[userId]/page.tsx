@@ -52,11 +52,10 @@ function UserPage() {
   }, []);
 
   return (
-    <div className="mt-20 px-44  ">
+    <div className="px-5 mt-20 flex flex-col gap-5 md:px-48 sm:px-20 lg:px-52 xl:px-72">
       <div className="flex flex-col">
         <div className="flex justify-center h-32">
-          <div className="w-1/3 relative h-full">
-            {/* Arka plan resmi */}
+          <div className="w-full xl:w-1/3 lg:w1/3 md:w-1/2 relative h-full ">
             <div
               className=" w-full rounded-2xl bg-center bg-cover relative overflow-hidden h-28 shadow-xl "
               style={{
@@ -65,10 +64,8 @@ function UserPage() {
                   " 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
               }}
             >
-              {/* Arka plan karartma katmanı */}
               <div className="absolute inset-0 bg-black bg-opacity-60 rounded-md z-0" />
 
-              {/* İçerik katmanı */}
               <div className="relative z-10 text-white flex flex-col items-center justify-center h-full gap-2">
                 <h1 className="text-3xl font-semibold drop-shadow-md">
                   {data?.user.userName}
@@ -91,6 +88,7 @@ function UserPage() {
           <Button
             color="primary"
             variant="contained"
+            size="small"
             onClick={() => setSelectedOption("40")}
             sx={{ textTransform: "none" }}
           >
@@ -99,6 +97,7 @@ function UserPage() {
           <Button
             color="primary"
             variant="text"
+            size="small"
             onClick={() => setSelectedOption("20")}
             sx={{ textTransform: "none" }}
           >
@@ -106,6 +105,7 @@ function UserPage() {
           </Button>
           <Button
             color="primary"
+            size="small"
             variant="outlined"
             onClick={() => setSelectedOption("30")}
             sx={{ textTransform: "none" }}

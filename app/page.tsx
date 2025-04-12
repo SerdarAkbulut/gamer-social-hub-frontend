@@ -39,7 +39,7 @@ const Page = () => {
   };
 
   return (
-    <div className="px-5 mt-32 flex flex-col gap-5 md:px-48 sm:px-20 lg:px-52 xl:px-72">
+    <div className="px-5 mt-20 flex flex-col gap-5 md:px-48 sm:px-20 lg:px-52 xl:px-72">
       <div>
         <div className="flex gap-5 justify-end mr-5">
           <Button

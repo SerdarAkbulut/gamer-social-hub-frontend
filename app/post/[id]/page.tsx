@@ -31,7 +31,7 @@ function ForumPage() {
   }, [data]);
 
   return (
-    <div className="mt-20 px-72">
+    <div className="mt-20 xl:px-72 px-32 md:px-48 sm:px-20 lg:px-52">
       {data?.postDetails.map((post, index) => (
         <div
           key={index}

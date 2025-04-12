@@ -99,23 +99,22 @@ const Header: React.FC = () => {
           </Drawer>
         </div>
 
-        {/* Sol - Menü (sadece masaüstü) */}
         <div className="hidden md:flex items-center gap-6 md:w-1/2">
-          <Link href="/" className="hover:text-gray-300 transition">
+          <a href="/" className="hover:text-gray-300 transition">
             Ana Sayfa
-          </Link>
-          <Link href="/games/1" className="hover:text-gray-300 transition">
+          </a>
+          <a href="/games/1" className="hover:text-gray-300 transition">
             Popüler Oyunlar
-          </Link>
-          <Link href="/games/new/1" className="hover:text-gray-300 transition">
+          </a>
+          <a href="/games/new/1" className="hover:text-gray-300 transition">
             Yeni Oyunlar
-          </Link>
-          <Link
+          </a>
+          <a
             href="/games/upcoming/1"
             className="hover:text-gray-300 transition"
           >
             Gelecek Oyunlar
-          </Link>
+          </a>
         </div>
 
         {/* Orta - Arama */}

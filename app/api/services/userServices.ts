@@ -67,7 +67,6 @@ export const loginUser = async (email: string, password: string) => {
       email,
       password,
     });
-    debugger;
     return response.data;
   } catch (error) {
     toast.error(error.response.data);
