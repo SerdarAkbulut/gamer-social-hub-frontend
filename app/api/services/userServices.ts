@@ -5,6 +5,9 @@ interface User {
   userName: string;
   id: number;
 }
+interface Error {
+  response: { data: { message: string }; status: number };
+}
 export const getUsers = async (): Promise<User[]> => {
   const response = await apiClient.get("/users");
   return response.data;
@@ -28,10 +31,13 @@ export const registerUser = async (
     });
 
     return response.data;
-  } catch (error: any) {
-    if (error.response && error.response.status === 409) {
+  } catch (error: unknown) {
+    if (
+      (error as Error)?.response &&
+      (error as Error)?.response?.status === 409
+    ) {
       toast.error(
-        error.response.data.message ||
+        (error as Error)?.response?.data?.message ||
           "E-posta veya kullanıcı adı zaten kayıtlı",
         {
           position: "top-right",
@@ -57,7 +63,7 @@ export const registerUser = async (
       });
     }
 
-    throw error; // Hata fırlatarak çağıran fonksiyonun da yakalamasını sağla
+    throw error;
   }
 };
 
@@ -69,7 +75,7 @@ export const loginUser = async (email: string, password: string) => {
     });
     return response.data;
   } catch (error) {
-    toast.error(error.response.data);
+    toast.error((error as Error).response.data.message);
   }
 };
 export const getUserFavoritedGames = async (userId: number) => {
@@ -113,8 +119,8 @@ export const updateUser = async (
       password,
     });
     return response.data;
-  } catch (error) {
-    toast.error(error?.response.data);
+  } catch (error: unknown) {
+    toast.error((error as Error)?.response?.data?.message);
   }
 };
 
@@ -123,9 +129,9 @@ export const forgotPassowrd = async (email: string) => {
     const response = await apiClient.post("/forgot-password", { email });
     toast.success(response.data.message);
     return response; // Başarıyla döndür
-  } catch (error) {
-    toast.error(error?.response?.data?.message || "Bilinmeyen hata");
-    throw error.response ?? new Error("Bilinmeyen hata"); // Hata fırlat
+  } catch (error: unknown) {
+    toast.error((error as Error)?.response?.data?.message || "Bilinmeyen hata");
+    throw (error as Error)?.response ?? new Error("Bilinmeyen hata"); // Hata fırlat
   }
 };
 
@@ -137,9 +143,9 @@ export const resetPassword = async (token: string, newPassword: string) => {
     });
     toast.success(response.data.message);
     return response; // Başarıyla döndür
-  } catch (error) {
-    toast.error(error?.response?.data?.message);
-    throw error.response ?? new Error("Bilinmeyen hata"); // Hata fırlat
+  } catch (error: unknown) {
+    toast.error((error as Error)?.response?.data?.message || "Bilinmeyen hata");
+    throw (error as Error)?.response ?? new Error("Bilinmeyen hata"); // Hata fırlat
   }
 };
 
@@ -155,8 +161,10 @@ export const uploadUserImage = async (file: Blob) => {
     });
 
     return response.data;
-  } catch (error) {
-    toast.error(error?.response.data);
+  } catch (error: unknown) {
+    toast.error(
+      (error as Error)?.response?.data?.message || "Resim yükleme başarısız."
+    );
     throw new Error("Resim yükleme başarısız.");
   }
 };
@@ -167,8 +175,10 @@ export const checkPasswordResetToken = async (token: string) => {
       `/check-reset-password-token/${token}`
     );
     return response.data;
-  } catch (error) {
-    throw new Error(error);
+  } catch (error: unknown) {
+    throw new Error(
+      (error as Error)?.response?.data?.message || "Bilinmeyen hata"
+    );
   }
 };
 
@@ -178,8 +188,10 @@ export const savePost = async (postId: number) => {
       postId: postId,
     });
     return response.data;
-  } catch (error) {
-    throw new Error(error);
+  } catch (error: unknown) {
+    throw new Error(
+      (error as Error)?.response?.data?.message || "Bilinmeyen hata"
+    );
   }
 };
 

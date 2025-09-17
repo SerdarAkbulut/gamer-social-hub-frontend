@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import apiClient from "../client/apiClient";
 
 export const follow = async (followingId: number) => {
