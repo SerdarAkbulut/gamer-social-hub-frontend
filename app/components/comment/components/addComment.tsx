@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -8,7 +9,7 @@ function AddComment() {
   const [editedComment, setEditedComment] = useState<string>("");
   const postId = useParams().id.toString();
   const { mutate } = useMutation({
-    mutationFn: () => addReply(postId, editedComment),
+    mutationFn: () => addReply(parseInt(postId), editedComment),
   });
   return (
     <div className="flex w-full flex-col">

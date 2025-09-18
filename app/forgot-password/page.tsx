@@ -9,7 +9,7 @@ function PasswordReset() {
   const [email, setEmail] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: () => forgotPassowrd(email),
     onSuccess: (response) => {
       if (response.data.valid) {
@@ -64,10 +64,7 @@ function PasswordReset() {
           fullWidth
           sx={{ mt: 2 }}
           onClick={() => mutate()}
-          disabled={isLoading}
-        >
-          {isLoading ? "Gönderiliyor..." : "Gönder"}
-        </Button>
+        ></Button>
         {successMessage && (
           <Typography sx={{ mt: 2, color: "green", textAlign: "center" }}>
             {successMessage}

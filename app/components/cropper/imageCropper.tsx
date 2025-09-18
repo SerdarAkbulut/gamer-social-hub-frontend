@@ -4,12 +4,11 @@ import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useMutation } from "@tanstack/react-query";
 import { uploadUserImage } from "@/app/api/services/userServices";
-
+import { Crop } from "react-image-crop";
 export default function ImageUploader() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  // Daha büyük başlangıç crop alanı
-  const [crop, setCrop] = useState({
+  const [crop, setCrop] = useState<Crop>({
     unit: "px",
     width: 640,
     height: 192,
@@ -17,7 +16,7 @@ export default function ImageUploader() {
     y: 50,
   });
 
-  const [completedCrop, setCompletedCrop] = useState<any>(null);
+  const [completedCrop, setCompletedCrop] = useState<object | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -42,10 +41,12 @@ export default function ImageUploader() {
         reader.readAsDataURL(file);
       }
     },
-    accept: "image/*",
+    accept: {
+      "image/*": [],
+    },
   });
 
-  const onCropComplete = (crop: any) => {
+  const onCropComplete = (crop: Crop) => {
     setCompletedCrop(crop);
     if (crop.width && crop.height && imgRef.current && canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
@@ -55,8 +56,8 @@ export default function ImageUploader() {
 
       canvasRef.current.width = crop.width * pixelRatio;
       canvasRef.current.height = crop.height * pixelRatio;
-
-      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      if (!ctx) return;
+      ctx?.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       ctx.imageSmoothingQuality = "high";
 
       ctx.drawImage(

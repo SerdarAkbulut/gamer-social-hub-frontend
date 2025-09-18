@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, CircularProgress } from "@mui/material";
+import { TextField, Button, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { updateUser } from "@/app/api/services/userServices";
 
@@ -10,12 +10,11 @@ function AccountSettings() {
   const [password, setNewPassword] = useState("");
 
   // Mutation işlemi
-  const { mutate, isLoading, isError, error } = useMutation({
+  const { mutate, isError, error } = useMutation({
     mutationFn: () => updateUser(userName, email, currentPassword, password),
   });
 
   const handleUpdate = () => {
-    // Mutate fonksiyonunu çağırarak verileri gönder
     mutate();
   };
 
@@ -87,14 +86,7 @@ function AccountSettings() {
           size="large"
           onClick={handleUpdate}
           sx={{ borderRadius: 2 }}
-          disabled={isLoading} // Yükleniyor durumu, butonu devre dışı bırakır
-        >
-          {isLoading ? (
-            <CircularProgress size={24} sx={{ color: "white" }} />
-          ) : (
-            "Güncelle"
-          )}
-        </Button>
+        ></Button>
       </div>
 
       {isError && (

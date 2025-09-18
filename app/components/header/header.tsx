@@ -44,7 +44,7 @@ const Header: React.FC = () => {
   const handleClickRemoveToken = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("token_expiry");
-    setUseToken(null);
+    setUseToken("");
   };
 
   const toggleDrawer = (open: boolean) => () => {
@@ -85,7 +85,6 @@ const Header: React.FC = () => {
   return (
     <>
       <header className="bg-gray-800 text-white px-4 py-4 flex items-center justify-between shadow-md xl:flex xl:gap-12 md:gap-12">
-        {/* Sol - Menü (mobilde görünür) */}
         <div className="md:hidden">
           <IconButton onClick={toggleDrawer(true)} className="text-white">
             <MenuIcon />
@@ -100,21 +99,21 @@ const Header: React.FC = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-6 md:w-1/2">
-          <a href="/" className="hover:text-gray-300 transition">
+          <Link href="/" className="hover:text-gray-300 transition">
             Ana Sayfa
-          </a>
-          <a href="/games/1" className="hover:text-gray-300 transition">
+          </Link>
+          <Link href="/games/1" className="hover:text-gray-300 transition">
             Popüler Oyunlar
-          </a>
-          <a href="/games/new/1" className="hover:text-gray-300 transition">
+          </Link>
+          <Link href="/games/new/1" className="hover:text-gray-300 transition">
             Yeni Oyunlar
-          </a>
-          <a
+          </Link>
+          <Link
             href="/games/upcoming/1"
             className="hover:text-gray-300 transition"
           >
             Gelecek Oyunlar
-          </a>
+          </Link>
         </div>
 
         {/* Orta - Arama */}

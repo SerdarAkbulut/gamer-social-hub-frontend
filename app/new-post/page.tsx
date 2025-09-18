@@ -5,6 +5,7 @@ import { Formik, Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { newPost } from "../api/services/postServices";
 import { toast } from "react-toastify";
+
 function NewPost() {
   const [gameId, setGameId] = useState<number | null>(null);
   const [gameName, setGameName] = useState<string | null>(null);
@@ -12,18 +13,20 @@ function NewPost() {
   useEffect(() => {
     const storedGameId = localStorage.getItem("gameId");
 
-    setGameId(storedGameId);
+    setGameId(storedGameId ? parseInt(storedGameId) : null);
 
     const storedGameName = localStorage.getItem("gameName");
     setGameName(storedGameName || null);
   }, []);
 
   const { mutate } = useMutation({
-    mutationFn: (data: { postTitle: string; postText: string }) =>
-      newPost(gameId, gameName, data.postTitle, data.postText),
-    onSuccess: () => {
-      console.log("İşlem başarılı");
-      toast.success("Form oluşturuldu");
+    mutationFn: (data: { postTitle: string; postText: string }) => {
+      if (gameId && gameName) {
+        return newPost(gameId, gameName, data.postTitle, data.postText);
+      } else {
+        toast.error("Oyun bilgisi bulunamadı");
+        return Promise.reject("Oyun bilgisi eksik");
+      }
     },
   });
 
@@ -35,7 +38,7 @@ function NewPost() {
             initialValues={{ postTitle: "", postText: "" }}
             onSubmit={(values, { resetForm }) => {
               mutate(values);
-              resetForm(); // Formu sıfırla
+              resetForm();
             }}
           >
             {({ handleChange, values }) => (

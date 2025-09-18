@@ -1,6 +1,6 @@
 "use client";
 import { profileState } from "@/app/state/atoms";
-import { MenuItem, MenuList, Paper } from "@mui/material";
+import { MenuItem, MenuList } from "@mui/material";
 import React from "react";
 import { useRecoilState } from "recoil";
 interface User {

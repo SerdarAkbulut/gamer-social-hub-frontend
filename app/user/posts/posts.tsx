@@ -6,6 +6,19 @@ import React from "react";
 interface UserProps {
   userId: number;
 }
+interface UserContentProps {
+  gameId?: number;
+  gameName?: string;
+  postId?: number;
+  postText?: string;
+  postTitle?: string;
+  userId?: number;
+  userName?: string;
+  id: number;
+  user: {
+    userName: string;
+  };
+}
 
 const UserPosts: React.FC<UserProps> = ({ userId }) => {
   const { data } = useQuery({
@@ -16,7 +29,7 @@ const UserPosts: React.FC<UserProps> = ({ userId }) => {
   if (data.length === 0) return <p>Paylaşılan gönderi bulunmamaktadır</p>;
   return (
     <div className="flex flex-col gap-5">
-      {data?.map((items, index) => (
+      {data?.map((items: UserContentProps, index: number) => (
         <>
           <UserContent
             postId={items.id}

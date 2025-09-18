@@ -1,11 +1,11 @@
 "use client";
-import { Avatar, Button, Stack } from "@mui/material";
+import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Following from "../following/following";
 import Favorited from "../favorited/favorited";
 import Liked from "../liked/liked";
 import { useParams } from "next/navigation";
-import UserPosts from "../posts/page";
+import UserPosts from "../posts/posts";
 import { useRecoilState } from "recoil";
 import { profileBgImage } from "@/app/state/atoms";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -14,17 +14,17 @@ import { follow } from "@/app/api/services/followServices";
 
 function UserPage() {
   const [selectedOption, setSelectedOption] = useState("40");
-  const [bgImage, setBgImage] = useRecoilState(profileBgImage);
+  const [, setBgImage] = useRecoilState(profileBgImage);
   const params = useParams();
   const userId = params.userId.toString();
 
   const { data, refetch } = useQuery({
     queryKey: ["userDetail"],
-    queryFn: () => getUser(userId),
+    queryFn: () => getUser(parseInt(userId)),
   });
 
   const { mutate } = useMutation({
-    mutationFn: () => follow(userId),
+    mutationFn: () => follow(parseInt(userId)),
     onSuccess: (response) => {
       refetch();
       return response.data;

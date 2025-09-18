@@ -11,7 +11,7 @@ function RegisterPage() {
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
 
-  const { mutate, isLoading, isError, error } = useMutation({
+  const { mutate, isError, error } = useMutation({
     mutationFn: () => registerUser(userName, email, password),
     onSuccess: () => {
       router.push("/login"); // Kayıt başarılıysa login sayfasına yönlendir
@@ -62,10 +62,7 @@ function RegisterPage() {
             variant="contained"
             className="text-white text-md font-bold bg-black"
             fullWidth
-            disabled={isLoading}
-          >
-            {isLoading ? "Signing up..." : "Sign up"}
-          </Button>
+          ></Button>
           {isError && <p className="text-red-500 mt-2">{error?.message}</p>}
         </div>
       </div>

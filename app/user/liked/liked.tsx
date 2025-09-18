@@ -5,6 +5,14 @@ import React from "react";
 interface user {
   userId: number;
 }
+interface GameProps {
+  id: number;
+  gameId?: number | undefined;
+  name: string;
+  cover_url: string;
+  isLiked: boolean | null;
+  isFavorited: boolean;
+}
 const Liked: React.FC<user> = ({ userId }) => {
   const { data, refetch } = useQuery({
     queryKey: ["userFavoritedGames"],
@@ -15,7 +23,7 @@ const Liked: React.FC<user> = ({ userId }) => {
   if (data.length === 0) return <p>Beğendiği oyunlar bulunmamaktadır</p>;
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
-      {data.map((game: any, index: number) => (
+      {data.map((game: GameProps, index: number) => (
         <CardList key={index} game={game} refetch={refetch} isHidden={true} />
       ))}
     </div>

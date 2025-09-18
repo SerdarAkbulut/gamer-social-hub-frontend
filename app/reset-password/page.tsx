@@ -22,7 +22,12 @@ function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
   const { mutate } = useMutation({
-    mutationFn: () => resetPassword(token, newPassword),
+    mutationFn: () => {
+      if (!token) {
+        return Promise.reject("Token eksik");
+      }
+      return resetPassword(token, newPassword);
+    },
     onSuccess: (response) => {
       router.push("/login");
       return response.data;
@@ -36,11 +41,13 @@ function ResetPassword() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["checkPasswordToken", token],
-    queryFn: () => checkPasswordResetToken(token),
+    queryFn: () => {
+      if (!token) return Promise.reject("Token eksik");
+      return checkPasswordResetToken(token);
+    },
     enabled: !!token,
     staleTime: Infinity,
   });
-
   if (isLoading) {
     return (
       <Container

@@ -12,7 +12,6 @@ export const apiClientMedia = axios.create({
     "Content-Type": "multipart/form-data",
   },
 });
-// 📌 İstek Yapılmadan Önce Token'ı Ekleyelim
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");
@@ -32,7 +31,6 @@ apiClientMedia.interceptors.request.use((config) => {
   }
   return config;
 });
-// 📌 API Hatalarını Yönetelim
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -44,12 +42,10 @@ apiClient.interceptors.response.use(
       if (status === 401) {
         console.warn("Yetkilendirme hatası! Kullanıcı çıkış yapıyor...");
 
-        // 🔥 Token'ı localStorage'dan silebiliriz
         if (typeof window !== "undefined") {
           localStorage.removeItem("token");
         }
 
-        // 🔄 Giriş sayfasına yönlendirme ekleyebiliriz (Next.js için)
         if (typeof window !== "undefined") {
           window.location.href = "/login";
         }

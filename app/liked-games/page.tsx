@@ -7,6 +7,15 @@ import { useQuery } from "@tanstack/react-query";
 import { myLikedGames } from "@/app/api/services/likedGames";
 import CardList from "../components/card/game-card/cardList";
 
+interface GameProps {
+  id: number;
+  gameId?: number | undefined;
+  name: string;
+  cover_url: string;
+  isLiked: boolean | null;
+  isFavorited: boolean;
+}
+
 function LikedGames() {
   const params = useParams();
 
@@ -24,7 +33,7 @@ function LikedGames() {
     <>
       <div className="px-28 mt-28">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-12">
-          {data?.map((game: any, index: number) => (
+          {data?.map((game: GameProps, index: number) => (
             <CardList key={index} game={game} refetch={refetch} />
           ))}
         </div>

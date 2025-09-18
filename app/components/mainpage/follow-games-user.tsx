@@ -3,6 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import UserContent from "../card/user-content/userContent";
 
+interface FollowGamesAndUserProps {
+  gameId?: number;
+  gameName?: string;
+  postId?: number;
+  postText?: string;
+  postTitle?: string;
+  userId?: number;
+  userName?: string;
+  id: number;
+  user: {
+    userName: string;
+  };
+}
+
 function FollowGamesAndUser() {
   const { data } = useQuery({
     queryKey: ["mainFavoritedAndUserPosts"],
@@ -17,7 +31,7 @@ function FollowGamesAndUser() {
   }
   return (
     <>
-      {data?.map((item: any, index: number) => (
+      {data?.map((item: FollowGamesAndUserProps, index: number) => (
         <>
           <UserContent
             key={index}

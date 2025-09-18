@@ -5,7 +5,14 @@ import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+interface GameProps {
+  id: number;
+  gameId?: number | undefined;
+  name: string;
+  cover_url: string;
+  isLiked: boolean | null;
+  isFavorited: boolean;
+}
 function NewGames() {
   const params = useParams();
   const router = useRouter();
@@ -27,7 +34,7 @@ function NewGames() {
     <>
       <div className="px-5 mt-20 flex flex-col gap-5 md:px-28 sm:px-20 lg:px-32 xl:px-44">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6  gap-5 mt-12">
-          {data?.map((game: any, index: number) => (
+          {data?.map((game: GameProps, index: number) => (
             <CardList key={index} game={game} refetch={refetch} />
           ))}
         </div>

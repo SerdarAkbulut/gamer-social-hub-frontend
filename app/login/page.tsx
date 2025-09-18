@@ -39,7 +39,7 @@ function LoginPage() {
     setToken(token); // token'ı state'e kaydediyoruz
   }
 
-  const { mutate, isLoading, isError } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: () => loginUser(email, password),
     onSuccess: (response) => {
       if (response?.token) {
@@ -84,7 +84,6 @@ function LoginPage() {
             variant="contained"
             className="text-white text-md font-bold bg-black"
             fullWidth
-            disabled={isLoading}
           >
             Giriş
           </Button>

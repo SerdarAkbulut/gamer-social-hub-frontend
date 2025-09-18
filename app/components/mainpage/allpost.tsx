@@ -3,6 +3,20 @@ import UserContent from "../card/user-content/userContent";
 import { useQuery } from "@tanstack/react-query";
 import { getallPost } from "@/app/api/services/postServices";
 
+interface AllPostProps {
+  gameId?: number;
+  gameName?: string;
+  postId?: number;
+  postText?: string;
+  postTitle?: string;
+  userId?: number;
+  userName?: string;
+  id: number;
+  user: {
+    userName: string;
+  };
+}
+
 function AllPost() {
   const { data } = useQuery({
     queryKey: ["mainAllPosts"],
@@ -10,7 +24,7 @@ function AllPost() {
   });
   return (
     <>
-      {data?.map((item: any, index: number) => (
+      {data?.map((item: AllPostProps, index: number) => (
         <>
           <UserContent
             key={index}

@@ -2,7 +2,18 @@ import UserContent from "@/app/components/card/user-content/userContent";
 import React from "react";
 interface GameDetailsProps {
   name: string;
-  gamePosts: [];
+  gamePosts: [
+    {
+      id: number;
+      userId: number;
+      user: {
+        userName: string;
+      };
+      gameName: string;
+      postTitle: string;
+      postText: string;
+    }
+  ];
 }
 const GameDetailsComponent: React.FC<GameDetailsProps> = ({ gamePosts }) => {
   return (

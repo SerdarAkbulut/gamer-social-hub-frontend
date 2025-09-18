@@ -26,18 +26,16 @@ const LikeButton = ({ gameId, gameName, gameImage, isLiked }: GameProps) => {
         variables.gameImage,
         variables.isLiked
       ),
-    onSuccess: () => {
-      // On success, you can add any further actions, such as refetching the data
-    },
+    onSuccess: () => {},
   });
 
   const handleLikeClick = () => {
-    setIsButtonClicked(true); // Hızlı görsel değişiklik için
+    setIsButtonClicked(true);
     mutate({
       gameId,
       gameName,
       gameImage,
-      isLiked: !isLiked, // Beğenme durumu değişir
+      isLiked: !isLiked,
     });
   };
 

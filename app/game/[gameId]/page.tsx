@@ -10,10 +10,31 @@ import GameDetailsComponent from "../components/gameDetails";
 
 import { getGameDetails } from "@/app/api/services/gameServices";
 
+interface GameDetailsProps {
+  id: number;
+  name: string;
+  gamePosts: [
+    {
+      id: number;
+      userId: number;
+      user: {
+        userName: string;
+      };
+      gameName: string;
+      postTitle: string;
+      postText: string;
+    }
+  ];
+}
 const GameDetails = () => {
   const router = useRouter();
   const params = useParams();
-  const gameId = params?.gameId ? parseInt(params.gameId, 10) : null;
+  const gameId = params?.gameId
+    ? parseInt(
+        Array.isArray(params.gameId) ? params.gameId[0] : params.gameId,
+        10
+      )
+    : null;
 
   useEffect(() => {
     if (typeof window !== "undefined" && gameId) {
@@ -34,7 +55,7 @@ const GameDetails = () => {
 
   return (
     <div className="px-72 mt-20 ">
-      {gameDetails?.map((game, index) => (
+      {gameDetails?.map((game: GameDetailsProps, index: number) => (
         <div key={index} className="space-y-6">
           <div className="bg-gradient-to-r from-gray-800 to-gray-700 p-6 text-white rounded-lg flex justify-between items-center shadow-lg">
             <h1 className="text-3xl font-bold">{game.name}</h1>

@@ -7,11 +7,24 @@ import React, { useEffect } from "react";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import SvgIcon from "@mui/icons-material/BookmarkBorder";
 import { savePost } from "@/app/api/services/userServices";
+
+interface PostDetailsProps {
+  id: number;
+  gameId?: number;
+  gameName?: string;
+  postId?: number;
+  postText?: string;
+  user: { userName: string };
+  isSaved: boolean;
+  postTitle?: string;
+  replies: { id: number; reply: string; user: { userName: string } }[];
+}
+
 function ForumPage() {
   const params = useParams();
   const postId = params.id.toString();
   const { mutate } = useMutation({
-    mutationFn: () => savePost(postId),
+    mutationFn: () => savePost(parseInt(postId)),
     onSuccess: () => {
       refetch();
       console.log("Post kaydedildi");
@@ -20,7 +33,7 @@ function ForumPage() {
 
   const { data, refetch } = useQuery({
     queryKey: ["postDetails", postId],
-    queryFn: () => getPostDetails(postId),
+    queryFn: () => getPostDetails(parseInt(postId)),
     staleTime: Infinity,
   });
 
@@ -32,7 +45,7 @@ function ForumPage() {
 
   return (
     <div className="mt-20 xl:px-72 px-32 md:px-48 sm:px-20 lg:px-52">
-      {data?.postDetails.map((post, index) => (
+      {data?.postDetails.map((post: PostDetailsProps, index: number) => (
         <div
           key={index}
           className="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200"

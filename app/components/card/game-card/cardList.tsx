@@ -17,7 +17,14 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 interface CardListProps {
-  game: any;
+  game: {
+    id: number;
+    gameId?: number;
+    name: string;
+    cover_url: string;
+    isLiked: boolean | null;
+    isFavorited: boolean;
+  };
   refetch: () => void;
   isHidden?: boolean;
 }
@@ -27,13 +34,14 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
   const [favorite, setFavorite] = useState<boolean>(game.isFavorited);
 
   const { mutate: liked } = useMutation({
-    mutationFn: () => likeGame(game.id, game.name, game.cover_url, likeState),
+    mutationFn: () =>
+      likeGame(game.id, game.name, game.cover_url, likeState ? true : false),
     onSuccess: () => refetch(),
   });
 
   const { mutate: favorited } = useMutation({
     mutationFn: () =>
-      favoriteGame(game.id || game.gameId, game.name, game.cover_url, favorite),
+      favoriteGame(game.id ?? game.gameId, game.name, game.cover_url, favorite),
     onSuccess: () => refetch(),
   });
 
@@ -89,7 +97,7 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
           </div>
 
           <motion.div
-            animate={favorite ? { scale: [1, 1.8, 1] } : 1}
+            animate={favorite ? { scale: [1, 1.8, 1] } : { scale: 1 }}
             transition={{ duration: 1.0, ease: "circInOut" }}
             className="ml-auto"
           >
@@ -98,7 +106,7 @@ const CardList: React.FC<CardListProps> = ({ game, refetch, isHidden }) => {
                 favorite ? "text-red-500" : "text-gray-400"
               }`}
               onClick={() => {
-                setFavorite(favorite ? false : true);
+                setFavorite(!favorite);
                 favorited();
               }}
             />
